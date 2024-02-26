@@ -1,8 +1,8 @@
 <script setup></script>
 
 <template>
-  <div>
-    <div class="bg-gray-100">
+  <div style="border-image: linear-gradient(to left, #743ad5, #d53a9d)">
+    <div class="border-1">
       <nav
         class="container px-6 py-2 mx-auto md:flex md:justify-between md:items-center"
       >
@@ -30,16 +30,16 @@
           :class="showMenu ? 'flex' : 'hidden'"
           class="flex-col mt-8 space-y-4 md:flex md:space-y-0 md:flex-row md:items-center md:space-x-10 md:mt-0"
         >
-          <li class="text-m font-light text-gray-800 hover:text-blue-400">
+          <li class="text-m font-light text-gray-800 hover:text-violet-400">
             Home
           </li>
-          <li class="text-m font-light text-gray-800 hover:text-blue-400">
+          <li class="text-m font-light text-gray-800 hover:text-violet-400">
             About
           </li>
-          <li class="text-m font-light text-gray-800 hover:text-blue-400">
+          <li class="text-m font-light text-gray-800 hover:text-violet-400">
             Blogs
           </li>
-          <li class="text-m font-light text-gray-800 hover:text-blue-400">
+          <li class="text-m font-light text-gray-800 hover:text-violet-400">
             Contact Us
           </li>
         </ul>
@@ -51,5 +51,9 @@
 <style scoped>
 .logo-marque {
   background-image: url("src\assets\lmye.svg");
+}
+.border-1 {
+  border-bottom: 0.25rem solid;
+  border-image: linear-gradient(to right, rgb(43, 2, 139), darkorchid) 1;
 }
 </style>

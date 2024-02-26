@@ -6,17 +6,24 @@ defineProps({
 });
 
 const count = ref(0);
+
+const reset = () => {
+  count.value = 0;
+};
 </script>
 
 <template>
-  <h1>{{ msg }}</h1>
+  <h1 class="my-9">{{ msg }}</h1>
   <div class="card">
-    <button type="button">count is {{ count }}</button>
+    <div type="button">count is {{ count }}</div>
     <p>
       Edit
       <code>components/HelloWorld.vue</code> to test HMR
     </p>
-    <button class="btn bg-fuchsia-950 hover:bg-fuchsia-700" @click="count++">
+    <button
+      class="btn bg-fuchsia-950 hover:bg-fuchsia-700 tototo"
+      @click="count++"
+    >
       Click me
     </button>
   </div>
@@ -32,6 +39,7 @@ const count = ref(0);
     <a href="https://github.com/vuejs/language-tools" target="_blank">Volar</a>
     in your IDE for a better DX
   </p>
+  <button @click="reset">reset</button>
   <p class="read-the-docs">Click on the Vite and Vue logos to learn more</p>
   <div class="bg-stone-50" style="width: 100vw; height: 100vh"></div>
   <div class="bg-violet-50" style="width: 100vw; height: 100vh"></div>
@@ -41,5 +49,9 @@ const count = ref(0);
 <style scoped>
 .read-the-docs {
   color: #888;
+}
+
+.tototo {
+  color: #fff;
 }
 </style>

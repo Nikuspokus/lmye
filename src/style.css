@@ -5,12 +5,24 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #2b2146;
+  /* background-color: #2b2146; */
+  background-color: #FFFFFF;
+  /* background-image: repeating-linear-gradient(
+  -45deg,
+  #553c9a,
+  #553c9a 25px,
+  #b393d3 25px,
+  #b393d3 50px
+); */
+/* filter: blur(3.5px); */
 
-  font-synthesis: none;
+
+
+  font-synthesis:none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color: #111111;
 }
 
 a {
