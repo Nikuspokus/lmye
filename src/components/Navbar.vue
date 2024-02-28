@@ -1,7 +1,8 @@
 <script setup></script>
 
 <template>
-  <div style="background-color: darkorchid; color: white">
+  <!-- <div style="background-color: darkorchid; color: white"> -->
+  <div style="background-color: #382961">
     Bienvenue chez la Marque y est ! Livraison offerte à partir de 100€
   </div>
 

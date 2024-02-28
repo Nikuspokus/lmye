@@ -58,6 +58,6 @@ const reset = () => {
 .test-image {
   max-width: 100%;
   height: 70.9dvh;
-  background-image: url("../assets/wallpaper-sac-a-main-2.png");
+  background-color: #382961;
 }
 </style>
