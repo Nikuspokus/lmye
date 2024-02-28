@@ -1,20 +1,10 @@
 <script setup></script>
 
 <template>
-  <div style="background-color: darkorchid; color: white">
-    Bienvenue chez la Marque y est ! Livraison offerte à partir de 100€
-  </div>
-
-  <div
-    style="
-      border-image: linear-gradient(to left, #743ad5, #d53a9d);
-      line-height: 4.5;
-    "
-  >
+  <div style="border-image: linear-gradient(to left, #743ad5, #d53a9d)">
     <div class="border-1">
       <nav
-        class="container py-0 mx-auto pt-0 md:flex md:justify-between md:items-center;"
-        style="max-width: 1200px"
+        class="container px-6 py-2 mx-auto md:flex md:justify-between md:items-center"
       >
         <div class="flex items-center justify-between">
           <img src="../assets/lmye.svg" style="width: 200px" />
