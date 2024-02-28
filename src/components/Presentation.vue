@@ -7,7 +7,7 @@
         class="container px-6 py-2 mx-auto md:flex md:justify-between md:items-center"
       >
         <div class="flex items-center justify-between">
-          <img src="../assets/lmye.svg" style="width: 200px" />
+          <!-- <div src="../assets/lmye.svg" style="width: 200px; color: red" /> -->
 
           <!-- Mobile menu button -->
           <div @click="showMenu = !showMenu" class="flex md:hidden">
