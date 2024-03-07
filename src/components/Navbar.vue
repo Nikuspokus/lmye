@@ -2,9 +2,6 @@
 
 <template>
   <!-- <div style="background-color: darkorchid; color: white"> -->
-  <div style="background-color: #382961">
-    Bienvenue chez la Marque y est ! Livraison offerte à partir de 100€
-  </div>
 
   <div
     style="
@@ -12,10 +9,12 @@
       line-height: 4.5;
     "
   >
-    <div class="border-1">
+    <div class="navbar border-1">
+      <div style="background-color: #382961; line-height: 1.5">
+        Bienvenue chez la Marque y est ! Livraison offerte à partir de 100€
+      </div>
       <nav
         class="container py-0 mx-auto pt-0 md:flex md:justify-between md:items-center;"
-        style="max-width: 1200px"
       >
         <div class="flex items-center justify-between">
           <img src="../assets/lmye.svg" style="width: 200px" />
@@ -66,5 +65,13 @@
 .border-1 {
   border-bottom: 0.25rem solid;
   border-image: linear-gradient(to right, rgb(43, 2, 139), darkorchid) 1;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: white;
 }
 </style>

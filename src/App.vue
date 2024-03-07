@@ -5,9 +5,15 @@ import Navbar from "./components/Navbar.vue";
 </script>
 
 <template>
-  <Navbar />
+  <Navbar class="navbar" />
   <!-- <Presentation />  -->
-  <HelloWorld msg="Vite + Vue" />
+  <HelloWorld class="corps" msg="Vite + Vue" />
 </template>
 
-<style scoped></style>
+<style scoped>
+.navbar {
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+}
+</style>

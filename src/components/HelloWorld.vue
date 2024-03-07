@@ -57,7 +57,7 @@ const reset = () => {
 
 .test-image {
   max-width: 100%;
-  height: 70.9dvh;
+  height: 100vh;
   background-color: #382961;
 }
 </style>
