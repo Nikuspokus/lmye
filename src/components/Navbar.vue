@@ -40,18 +40,30 @@
           :class="showMenu ? 'flex' : 'hidden'"
           class="flex-col mt-8 space-y-4 md:flex md:space-y-0 md:flex-row md:items-center md:space-x-10 md:mt-0"
         >
-          <li class="text-m font-light text-gray-800 hover:text-violet-400">
+          <a
+            href="#home"
+            class="text-m font-light text-gray-800 hover:text-violet-400"
+          >
             Home
-          </li>
-          <li class="text-m font-light text-gray-800 hover:text-violet-400">
+          </a>
+          <a
+            href="#about"
+            class="text-m font-light text-gray-800 hover:text-violet-400"
+          >
             About
-          </li>
-          <li class="text-m font-light text-gray-800 hover:text-violet-400">
-            Blogs
-          </li>
-          <li class="text-m font-light text-gray-800 hover:text-violet-400">
-            Contact Us
-          </li>
+          </a>
+          <a
+            href="#galerie"
+            class="text-m font-light text-gray-800 hover:text-violet-400"
+          >
+            Galerie
+          </a>
+          <a
+            class="text-m font-light text-gray-800 hover:text-violet-400"
+            href="#contact"
+          >
+            Contact
+          </a>
         </ul>
       </nav>
     </div>

@@ -13,32 +13,18 @@ const reset = () => {
 </script>
 
 <template>
-  <div class="test-image red-filter">
-    <!-- <h1 class="py-9">{{ msg }}</h1>
-    <div class="container">
-      <div class="wrapper">
-        <img
-          src="../assets/arno-senoner-oCXVxwTFwqE-unsplash.jpg"
-          style="width: 500px"
-        />
-        <img
-          src="../assets/aromateec--q9tuxLn4hA-unsplash.jpg"
-          style="width: 500px"
-        />
-        <img
-          src="../assets/content-pixie-ZB4eQcNqVUs-unsplash.jpg"
-          style="width: 500px"
-        />
-        <img
-          src="../assets/diana-light-nvQemFKRBUo-unsplash.jpg"
-          style="width: 500px"
-        />
-        <img
-          src="../assets/laura-chouette-CtOA9wbFAdQ-unsplash.jpg"
-          style="width: 500px"
-        />
-      </div>
-    </div> -->
+  <div class="test-image">
+    <div class="logo" style="padding-top: 13em">
+      <img src="../assets/logo-lettre.png" style="width: 200px" />
+    </div>
+    <div class="toto" style="">
+      <p>
+        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Placeat
+        obcaecati magni fugit? Vero molestias obcaecati dolorum, consectetur
+        fuga necessitatibus dolor soluta! Pariatur quia quaerat aliquam quas
+        amet repudiandae eos laborum.
+      </p>
+    </div>
   </div>
   <div class="bg-red-400 tutu" style="width: 100vw; height: 100vh">
     <div class="container">
@@ -78,7 +64,7 @@ const reset = () => {
   <div class="bg-stone-300" style="width: 100vw; height: 100vh">
     <p>Configurateur</p>
   </div>
-  <div class="bg-amber-300" style="width: 100vw; height: 100vh">
+  <div class="bg-amber-300" style="width: 100vw; height: 100vh" id="contact">
     <p>footer</p>
   </div>
 </template>
@@ -148,5 +134,18 @@ const reset = () => {
   background-color: #ffd8a8;
   padding: 8em;
   color: #d9480f;
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.toto {
+  word-wrap: break-word;
+  width: 600px;
+  margin: 0 auto;
+  padding-top: 5em;
 }
 </style>
