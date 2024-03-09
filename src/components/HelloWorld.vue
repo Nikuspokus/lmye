@@ -78,11 +78,27 @@ const reset = () => {
   left: 50%;
   overflow: hidden;
 }
-.wrapper {
+/*.wrapperFade {
   display: flex;
-  animation: slide 20s infinite;
+  opacity: 1;
+  animation: fade 2s linear;
 }
-@keyframes slide {
+
+@keyframes fade {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}*/
+
+/*.wrapperSlide {
+  animation: slide 20s infinite;
+}*/
+
+/*@keyframes wrapperSlide {
   0% {
     transform: translateX(0);
   }
@@ -113,7 +129,7 @@ const reset = () => {
   98% {
     transform: translateX(-400%);
   }
-}
+}*/
 
 .test-image {
   max-width: 100%;

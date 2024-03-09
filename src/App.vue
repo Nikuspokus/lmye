@@ -24,26 +24,31 @@ import Navbar from "./components/Navbar.vue";
     </div>
     <div class="bg-red-400 tutu" style="width: 100vw; height: 100vh" id="about">
       <div class="container">
-        <div class="wrapper">
+        <div class="slideshow">
           <img
             src="./assets/arno-senoner-oCXVxwTFwqE-unsplash.jpg"
             style="width: 500px"
+            class="fade"
           />
           <img
             src="./assets/aromateec--q9tuxLn4hA-unsplash.jpg"
             style="width: 500px"
+            class="fade"
           />
           <img
             src="./assets/content-pixie-ZB4eQcNqVUs-unsplash.jpg"
             style="width: 500px"
+            class="fade"
           />
           <img
             src="./assets/diana-light-nvQemFKRBUo-unsplash.jpg"
             style="width: 500px"
+            class="fade"
           />
           <img
             src="./assets/laura-chouette-CtOA9wbFAdQ-unsplash.jpg"
             style="width: 500px"
+            class="fade"
           />
         </div>
       </div>
@@ -81,7 +86,91 @@ import Navbar from "./components/Navbar.vue";
   left: 50%;
   overflow: hidden;
 }
-.wrapper {
+
+.wrapperFade {
+  display: flex;
+  opacity: 0;
+  object-fit: cover; /* Pour s'assurer que les images couvrent bien le conteneur */
+  animation: fadeEffect 14s infinite;
+}
+
+@keyframes fadeEffect {
+  0% {
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  } /* Commence à apparaître */
+  20% {
+    opacity: 1;
+  } /* Reste visible */
+  25% {
+    opacity: 0;
+  } /* Commence à disparaître */
+  100% {
+    opacity: 0;
+  }
+}
+
+.slideshow {
+  position: relative;
+  width: 100%; /* Ajustez à la largeur souhaitée */
+  height: 400px; /* Ajustez à la hauteur souhaitée */
+}
+
+.slideshow img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  object-fit: cover; /* Pour s'assurer que les images couvrent bien le conteneur */
+  animation: fadeEffect 14s infinite; /* 24s est la durée totale, ajustez selon le besoin */
+}
+
+/* Animation de l'effet de fondu */
+@keyframes fadeEffect {
+  0% {
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  } /* Commence à apparaître */
+  20% {
+    opacity: 1;
+  } /* Reste visible */
+  25% {
+    opacity: 0;
+  } /* Commence à disparaître */
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Timing de l'animation pour chaque image */
+.slideshow img:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.slideshow img:nth-child(2) {
+  animation-delay: 8s; /* Ajustez le délai pour chaque image */
+}
+
+.slideshow img:nth-child(3) {
+  animation-delay: 16s;
+}
+
+.wrapperFade img:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.wrapperFade img:nth-child(2) {
+  animation-delay: 8s; /* Ajustez le délai pour chaque image */
+}
+
+.wrapperFade img:nth-child(3) {
+  animation-delay: 16s;
+}
+/*.wrapper {
   display: flex;
   animation: slide 20s infinite;
 }
@@ -116,7 +205,7 @@ import Navbar from "./components/Navbar.vue";
   98% {
     transform: translateX(-400%);
   }
-}
+}*/
 
 .test-image {
   max-width: 100%;
