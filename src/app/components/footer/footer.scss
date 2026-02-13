@@ -1,0 +1,184 @@
+.footer-section {
+    background-color: #f8f4fc; // Light purple tint
+    color: var(--color-text-primary);
+    padding-top: 4rem;
+    border-top: 1px solid var(--color-accent-purple);
+
+    .footer-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 3rem;
+        margin-bottom: 3rem;
+    }
+
+    .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: var(--color-text-primary);
+
+        .highlight {
+            font-weight: 300;
+            color: var(--color-accent-purple);
+        }
+    }
+
+    .h3 {
+        color: var(--color-text-primary);
+        font-size: 1.25rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--color-accent-purple);
+        display: inline-block;
+    }
+
+    li,
+    a {
+        color: var(--color-text-secondary);
+        font-size: 0.95rem;
+        line-height: 1.8;
+    }
+
+    a:hover {
+        color: var(--color-accent-purple);
+    }
+
+    p {
+        color: var(--color-text-primary);
+        font-size: 0.95rem;
+        line-height: 1.8;
+    }
+
+    .brand-concept {
+        font-size: 0.9rem;
+        font-style: italic;
+        margin-bottom: 1.5rem;
+        line-height: 1.5;
+    }
+
+    .social-links {
+        display: flex;
+        gap: 1.25rem;
+        align-items: center;
+    }
+
+    .social-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.2s ease, opacity 0.2s ease;
+
+        &:hover {
+            transform: translateY(-3px);
+            opacity: 0.8;
+        }
+
+        &.messenger {
+            color: #0084ff !important;
+        }
+
+        &.instagram {
+            color: #E1306C !important;
+        }
+    }
+
+    .hours ul {
+        li {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(177, 156, 217, 0.2);
+            padding: 0.5rem 0;
+
+            span {
+                font-weight: 600;
+                color: var(--color-text-primary);
+            }
+        }
+    }
+
+    .atelier-card {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        background: white;
+        padding: 1.25rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+        margin-bottom: 1rem;
+        border: 1px solid rgba(177, 156, 217, 0.15);
+
+        .atelier-icon {
+            color: var(--color-accent-purple);
+            background: rgba(177, 156, 217, 0.08);
+            padding: 0.75rem;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .atelier-text {
+            display: flex;
+            flex-direction: column;
+
+            .location {
+                font-weight: 700;
+                color: var(--color-text-primary);
+                font-size: 1rem;
+            }
+
+            .mode {
+                font-size: 0.8rem;
+                color: var(--color-text-secondary);
+            }
+        }
+    }
+
+    .service-details {
+        font-size: 0.85rem;
+        color: var(--color-text-secondary);
+        line-height: 1.6;
+
+        em {
+            display: block;
+            margin-top: 0.5rem;
+            color: var(--color-accent-purple);
+            font-weight: 500;
+        }
+    }
+
+    .contact-info {
+        .response-time {
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1.25rem;
+            font-size: 0.85rem;
+        }
+    }
+
+    .footer-bottom {
+        background-color: var(--color-accent-purple);
+        padding: 1.5rem 0;
+        text-align: center;
+        font-size: 0.85rem;
+        color: white;
+        border-top: none;
+
+        .footer-links {
+            margin-bottom: 0.5rem;
+
+            a {
+                color: rgba(255, 255, 255, 0.9);
+                text-decoration: none;
+
+                &:hover {
+                    color: white;
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}

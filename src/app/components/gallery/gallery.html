@@ -1,0 +1,39 @@
+@if (filteredProducts$ | async; as products) {
+@if (products.length > 0) {
+<section id="gallery" class="section gallery-section">
+    <div class="container">
+        <h2 class="h2 text-center">Nos Créations</h2>
+        <p class="text-lead text-center">Découvrez l'ensemble de notre savoir-faire artisanal.</p>
+
+        <div class="filters text-center mb-4">
+            <button class="filter-btn" [class.active]="currentFilter === 'Tous'"
+                (click)="filterProducts('Tous')">Tous</button>
+            <button class="filter-btn" [class.active]="currentFilter === 'Sac'"
+                (click)="filterProducts('Sac')">Sacs</button>
+            <button class="filter-btn" [class.active]="currentFilter === 'Pochette'"
+                (click)="filterProducts('Pochette')">Pochettes</button>
+        </div>
+
+        <div class="product-grid">
+            @for (product of products; track product.id) {
+            <div class="product-card" [routerLink]="['/product', product.id]">
+                <div class="image-wrapper">
+                    @if (product.badge) {
+                    <div class="badge" [ngClass]="product.badgeColor">{{ product.badge }}</div>
+                    }
+                    <img [src]="product.image" [alt]="product.type">
+                </div>
+                <div class="product-info">
+                    <small class="brand">{{ product.brand }}</small>
+                    <h3 class="product-name">{{ product.type }}</h3>
+                    @if (product.price) {
+                    <div class="price">{{ product.price }} {{ product.price.includes('€') ? '' : '€' }}</div>
+                    }
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</section>
+}
+}

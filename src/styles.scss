@@ -1,0 +1,122 @@
+/* Design System Variables */
+:root {
+    --color-bg-primary: #FFFFFF;
+    --color-bg-secondary: #F8F9FA;
+    --color-text-primary: #1A1A1A;
+    --color-text-secondary: #4A4A4A;
+    --color-accent-red: #E63946;
+    --color-accent-blue: #1D3557;
+    --color-accent-purple: #513a58; // Soft pastel purple
+    --color-border: #E0E0E0;
+
+    --font-primary: 'Montserrat', sans-serif;
+
+    --spacing-unit: 8px;
+    --container-width: 1200px;
+}
+
+/* Reset & Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-primary);
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.3s ease;
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Typography Utility Classes */
+.h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.h2 {
+    font-size: 2.25rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+.h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.text-lead {
+    font-size: 1.125rem;
+    color: var(--color-text-secondary);
+}
+
+/* Layout Utilities */
+.container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.section {
+    padding: 4rem 0;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    &.btn-primary {
+        background-color: var(--color-text-primary);
+        color: white;
+
+        &:hover {
+            background-color: var(--color-accent-purple);
+        }
+    }
+
+    &.btn-accent {
+        background-color: var(--color-accent-red);
+        color: white;
+
+        &:hover {
+            opacity: 0.9;
+        }
+    }
+
+    &.btn-outline {
+        border: 2px solid var(--color-text-primary);
+        background: transparent;
+        color: var(--color-text-primary);
+
+        &:hover {
+            background: var(--color-text-primary);
+            color: white;
+        }
+    }
+}

@@ -1,0 +1,30 @@
+@if (latestProducts$ | async; as products) {
+@if (products.length > 0) {
+<section id="nouveautes" class="section nouveautes-section">
+    <div class="container">
+        <h2 class="h2 text-center">Nouveautés</h2>
+        <p class="text-lead text-center">Les pépites de la semaine à ne pas manquer.</p>
+
+        <div class="product-grid">
+            @for (product of products; track product.id) {
+            <div class="product-card" [routerLink]="['/product', product.id]">
+                <div class="image-wrapper">
+                    @if (product.badge) {
+                    <div class="badge" [ngClass]="product.badgeColor">{{ product.badge }}</div>
+                    }
+                    <img [src]="product.image" [alt]="product.type">
+                </div>
+                <div class="product-info">
+                    <small class="brand">{{ product.brand }}</small>
+                    <h3 class="product-name">{{ product.type }}</h3>
+                    @if (product.price) {
+                    <div class="price">{{ product.price }}{{ product.price.includes('€') ? '' : '€' }}</div>
+                    }
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</section>
+}
+}

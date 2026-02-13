@@ -1,0 +1,106 @@
+<div class="cart-page section">
+    <div class="container">
+        <h1 class="h2 text-center mb-4">Votre Panier</h1>
+
+        @if (orderSuccess) {
+        <div class="success-banner mb-4">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            <p>Merci pour votre commande ! Nous venons de recevoir votre demande par mail.</p>
+        </div>
+        }
+
+        <div *ngIf="cartItems.length > 0; else emptyCart" class="cart-container">
+            <div class="cart-items">
+                <div *ngFor="let item of cartItems" class="cart-item">
+                    <img [src]="item.product.image" [alt]="item.product.type" class="item-image"
+                        [routerLink]="['/product', item.product.id]">
+                    <div class="item-details" [routerLink]="['/product', item.product.id]">
+                        <h3 class="h4">{{ item.product.type }}</h3>
+                        <p class="brand">{{ item.product.brand }}</p>
+                        <p class="price">{{ item.product.price }} {{ item.product.price.includes('€') ? '' : '€' }}</p>
+                    </div>
+                    <div class="item-quantity">
+                        <div class="quantity-controls">
+                            <button class="qty-btn" (click)="decrementQuantity(item)"
+                                [disabled]="item.quantity === 1">−</button>
+                            <span class="qty-value">{{ item.quantity }}</span>
+                            <button class="qty-btn" (click)="incrementQuantity(item)">+</button>
+                        </div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn-remove" (click)="removeItem(item)" title="Supprimer">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="3 6 5 6 21 6"></polyline>
+                                <path
+                                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                </path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cart-summary">
+                <div class="summary-card">
+                    <h3 class="h4">Récapitulatif</h3>
+                    <div class="total-row">
+                        <span>Total</span>
+                        <span class="total-price">{{ total }}€</span>
+                    </div>
+
+                    <div class="checkout-form-container">
+                        <h4 class="h4 mb-3">Finaliser la commande</h4>
+                        <form action="https://formsubmit.co/la.marque.y.est@gmail.com" method="POST" id="checkout-form"
+                            ngNoForm>
+                            <input type="hidden" name="_template" value="box">
+                            <input type="hidden" name="_subject" value="Nouvelle commande - La Marque y Est">
+                            <input type="hidden" name="_autoresponse"
+                                value="Merci pour votre commande sur La Marque y Est ! Nous avons bien reçu votre demande et nous vous recontacterons très prochainement pour finaliser le paiement et l'envoi.">
+                            <input type="hidden" name="_next" [value]="getCartSuccessUrl()">
+
+                            <!-- User Details -->
+                            <div class="form-group mb-2">
+                                <input type="text" name="name" placeholder="Nom complet" required class="form-input"
+                                    [(ngModel)]="orderData.name">
+                            </div>
+                            <div class="form-group mb-2">
+                                <input type="email" name="email" placeholder="Email" required class="form-input"
+                                    [(ngModel)]="orderData.email">
+                            </div>
+                            <div class="form-group mb-2">
+                                <input type="tel" name="phone" placeholder="Téléphone" required class="form-input"
+                                    [(ngModel)]="orderData.phone">
+                            </div>
+                            <div class="form-group mb-2">
+                                <textarea name="address" placeholder="Adresse complète de livraison" required
+                                    class="form-input" rows="2" [(ngModel)]="orderData.address"></textarea>
+                            </div>
+                            <div class="form-group mb-3">
+                                <textarea name="message" placeholder="Un message ou une précision ? (Optionnel)"
+                                    class="form-input" rows="2"></textarea>
+                            </div>
+
+                            <!-- Hidden Cart Details -->
+                            <input type="hidden" name="Detail_Commande" [value]="getCartSummaryForEmail()">
+
+                            <button type="submit" class="btn btn-primary btn-full">Confirmer la commande</button>
+                        </form>
+                    </div>
+
+                    <button (click)="clearCart()" class="btn btn-outline btn-full mt-3">Vider le panier</button>
+                </div>
+            </div>
+        </div>
+
+        <ng-template #emptyCart>
+            <div class="empty-state text-center">
+                <p class="text-lead">Votre panier est vide.</p>
+                <a routerLink="/" class="btn btn-primary">Découvrir nos créations</a>
+            </div>
+        </ng-template>
+    </div>
+</div>
