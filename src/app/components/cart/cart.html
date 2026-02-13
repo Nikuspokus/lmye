@@ -1,0 +1,57 @@
+<div class="cart-page section">
+    <div class="container">
+        <h1 class="h2 text-center mb-4">Votre Panier</h1>
+
+        <div *ngIf="cartItems.length > 0; else emptyCart" class="cart-container">
+            <div class="cart-items">
+                <div *ngFor="let item of cartItems" class="cart-item">
+                    <img [src]="item.product.image" [alt]="item.product.type" class="item-image"
+                        [routerLink]="['/product', item.product.id]">
+                    <div class="item-details" [routerLink]="['/product', item.product.id]">
+                        <h3 class="h4">{{ item.product.type }}</h3>
+                        <p class="brand">{{ item.product.brand }}</p>
+                        <p class="price">{{ item.product.price }} {{ item.product.price.includes('€') ? '' : '€' }}</p>
+                    </div>
+                    <div class="item-quantity">
+                        <div class="quantity-controls">
+                            <button class="qty-btn" (click)="decrementQuantity(item)"
+                                [disabled]="item.quantity === 1">−</button>
+                            <span class="qty-value">{{ item.quantity }}</span>
+                            <button class="qty-btn" (click)="incrementQuantity(item)">+</button>
+                        </div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn-remove" (click)="removeItem(item)" title="Supprimer">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="3 6 5 6 21 6"></polyline>
+                                <path
+                                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                </path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cart-summary">
+                <div class="summary-card">
+                    <h3 class="h4">Récapitulatif</h3>
+                    <div class="total-row">
+                        <span>Total</span>
+                        <span class="total-price">{{ total }}€</span>
+                    </div>
+                    <button (click)="checkout()" class="btn btn-primary btn-full">Commander via Messenger</button>
+                    <button (click)="clearCart()" class="btn btn-outline btn-full mt-2">Vider le panier</button>
+                </div>
+            </div>
+        </div>
+
+        <ng-template #emptyCart>
+            <div class="empty-state text-center">
+                <p class="text-lead">Votre panier est vide.</p>
+                <a routerLink="/" class="btn btn-primary">Découvrir nos créations</a>
+            </div>
+        </ng-template>
+    </div>
+</div>

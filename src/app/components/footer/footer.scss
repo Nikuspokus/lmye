@@ -1,0 +1,106 @@
+.footer-section {
+    background-color: #f8f4fc; // Light purple tint
+    color: var(--color-text-primary);
+    padding-top: 4rem;
+    border-top: 1px solid var(--color-accent-purple);
+
+    .footer-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 3rem;
+        margin-bottom: 3rem;
+    }
+
+    .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: var(--color-text-primary);
+
+        .highlight {
+            font-weight: 300;
+            color: var(--color-accent-purple);
+        }
+    }
+
+    .h3 {
+        color: var(--color-text-primary);
+        font-size: 1.25rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--color-accent-purple);
+        display: inline-block;
+    }
+
+    p,
+    li,
+    a {
+        color: var(--color-text-secondary);
+        font-size: 0.95rem;
+        line-height: 1.8;
+    }
+
+    a:hover {
+        color: var(--color-accent-purple);
+    }
+
+    .messenger-link {
+        display: inline-flex;
+        align-items: center;
+        margin-top: 0.5rem;
+        color: #0084ff !important;
+        transition: transform 0.2s ease;
+
+        &:hover {
+            transform: scale(1.1);
+            color: #0073e6 !important;
+        }
+
+        .messenger-icon {
+            filter: drop-shadow(0 2px 4px rgba(0, 132, 255, 0.1));
+        }
+    }
+
+    .hours ul {
+        li {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(177, 156, 217, 0.2);
+            padding: 0.5rem 0;
+
+            span {
+                font-weight: 600;
+                color: var(--color-text-primary);
+            }
+        }
+    }
+
+    .map-wrapper {
+        border-radius: 4px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .footer-bottom {
+        background-color: var(--color-accent-purple);
+        padding: 1.5rem 0;
+        text-align: center;
+        font-size: 0.85rem;
+        color: white;
+        border-top: none;
+
+        .footer-links {
+            margin-bottom: 0.5rem;
+
+            a {
+                color: rgba(255, 255, 255, 0.9);
+                text-decoration: none;
+
+                &:hover {
+                    color: white;
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}

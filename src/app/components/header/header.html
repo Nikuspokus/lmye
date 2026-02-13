@@ -1,0 +1,30 @@
+<header class="header">
+    <div class="container header-content">
+        <div class="logo">
+            <a routerLink="/">
+                <img src="assets/images/493059193_122172773120352067_3252055687442239257_n.jpg" alt="La Marque y Est">
+                <span class="brand-name">La Marque y Est</span>
+            </a>
+        </div>
+        <nav class="nav">
+            <ul>
+                <li><a (click)="scrollTo('concept')">Concept</a></li>
+                <li><a (click)="scrollTo('gallery')">Arrivages</a></li>
+                <li><a routerLink="/atelier" routerLinkActive="active">L'Atelier</a></li>
+                <li><a href="https://m.me/61560562014105" target="_blank" class="contact-link">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="header-actions">
+
+            <div class="cart-icon" routerLink="/cart">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" class="basket-svg">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+                <span class="badge" *ngIf="(cartCount$ | async) as count">{{ count }}</span>
+            </div>
+        </div>
+    </div>
+</header>

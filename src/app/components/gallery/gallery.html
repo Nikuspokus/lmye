@@ -1,0 +1,49 @@
+<section id="gallery" class="section gallery-section">
+    <div class="container">
+        <h2 class="h2 text-center">Derniers Arrivages</h2>
+        <p class="text-lead text-center">Les pépites de la semaine à ne pas manquer.</p>
+
+        <div class="filters text-center mb-4">
+            <button class="filter-btn" [class.active]="currentFilter === 'Tous'"
+                (click)="filterProducts('Tous')">Tous</button>
+            <button class="filter-btn" [class.active]="currentFilter === 'Sac'"
+                (click)="filterProducts('Sac')">Sacs</button>
+            <button class="filter-btn" [class.active]="currentFilter === 'Pochette'"
+                (click)="filterProducts('Pochette')">Pochettes</button>
+        </div>
+
+        <div class="product-grid">
+            <!-- Loading State -->
+            @if ((filteredProducts$ | async) === null) {
+            <div class="text-center w-full py-5" style="grid-column: 1 / -1; color: #888;">
+                Chargement des pépites...
+            </div>
+            }
+
+            <!-- Products -->
+            @for (product of filteredProducts$ | async; track product.id) {
+            <div class="product-card" [routerLink]="['/product', product.id]">
+                <div class="image-wrapper">
+                    @if (product.badge) {
+                    <div class="badge" [ngClass]="product.badgeColor">{{ product.badge }}</div>
+                    }
+                    <img [src]="product.image" [alt]="product.type">
+                </div>
+                <div class="product-info">
+                    <small class="brand">{{ product.brand }}</small>
+                    <h3 class="product-name">{{ product.type }}</h3>
+                    @if (product.price) {
+                    <div class="price">{{ product.price }} {{ product.price.includes('€') ? '' : '€' }}</div>
+                    }
+                </div>
+            </div>
+            } @empty {
+            @if ((filteredProducts$ | async) !== null) {
+            <div class="text-center w-full py-5" style="grid-column: 1 / -1; color: #888;">
+                Aucun produit disponible pour le moment.
+            </div>
+            }
+            }
+        </div>
+    </div>
+</section>

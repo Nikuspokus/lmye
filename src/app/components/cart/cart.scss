@@ -1,0 +1,157 @@
+.cart-page {
+    padding-top: 100px;
+    min-height: 80vh;
+    background-color: var(--color-bg-secondary);
+
+    .cart-container {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+
+        @media (max-width: 768px) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .cart-items {
+        background: white;
+        border-radius: 8px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1rem;
+            margin: 0 -1rem 0.5rem -1rem;
+            border-radius: 12px;
+            border-bottom: 1px solid transparent; // Replace fixed border with transparency to avoid jumping
+            transition: all 0.3s ease;
+
+            &:hover {
+                background-color: #fbf8ff; // Soft violet-tinted white
+                box-shadow: 0 4px 12px rgba(122, 93, 250, 0.05); // Subtle purple tint in shadow
+            }
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            .item-image {
+                width: 80px;
+                height: 80px;
+                object-fit: cover;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+            .item-details {
+                flex: 1;
+                cursor: pointer;
+
+                .brand {
+                    font-size: 0.85rem;
+                    color: #888;
+                    margin-bottom: 0.25rem;
+                }
+            }
+
+            .item-quantity {
+                .quantity-controls {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.8rem;
+                    background: #f8f9fa;
+                    padding: 0.3rem;
+                    border-radius: 25px;
+                    border: 1px solid #eee;
+
+                    .qty-btn {
+                        width: 28px;
+                        height: 28px;
+                        border-radius: 50%;
+                        border: none;
+                        background: white;
+                        color: var(--color-text-primary);
+                        font-weight: bold;
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+                        transition: all 0.2s ease;
+
+                        &:hover:not(:disabled) {
+                            background: var(--color-accent-purple);
+                            color: white;
+                            transform: scale(1.1);
+                        }
+
+                        &:disabled {
+                            opacity: 0.5;
+                            cursor: not-allowed;
+                        }
+                    }
+
+                    .qty-value {
+                        font-size: 0.95rem;
+                        font-weight: 600;
+                        min-width: 1.5rem;
+                        text-align: center;
+                    }
+                }
+            }
+
+            .item-actions {
+                .btn-remove {
+                    background: transparent;
+                    border: none;
+                    color: #ccc;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+                    padding: 0.5rem;
+                    display: flex;
+                    align-items: center;
+
+                    &:hover {
+                        color: #ff4d4f;
+                        transform: scale(1.1);
+                    }
+                }
+            }
+        }
+    }
+
+    .cart-summary {
+        .summary-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 100px;
+
+            .total-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin: 1.5rem 0;
+                font-size: 1.25rem;
+                font-weight: 700;
+            }
+
+            .btn-full {
+                width: 100%;
+            }
+
+            .mt-2 {
+                margin-top: 0.5rem;
+            }
+        }
+    }
+
+    .empty-state {
+        padding: 4rem 0;
+    }
+}

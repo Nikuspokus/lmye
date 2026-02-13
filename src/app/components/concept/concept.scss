@@ -1,0 +1,45 @@
+.concept-section {
+    background-color: var(--color-bg-primary);
+    text-align: center;
+
+    .h2 {
+        margin-bottom: 0.5rem;
+    }
+
+    .text-lead {
+        margin-bottom: 3rem;
+    }
+
+    .grid-features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .feature-card {
+        padding: 2rem;
+        background: var(--color-bg-secondary);
+        border-radius: 8px;
+        transition: transform 0.3s ease;
+
+        &:hover {
+            transform: translateY(-5px);
+        }
+
+        .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        h3 {
+            color: var(--color-text-primary);
+            margin-bottom: 1rem;
+        }
+
+        p {
+            color: var(--color-text-secondary);
+            font-size: 0.95rem;
+        }
+    }
+}

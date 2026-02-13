@@ -1,0 +1,83 @@
+@if (product$ | async; as product) {
+<div class="container section product-page">
+    <a routerLink="/" class="back-link">← Retour aux arrivages</a>
+
+    <div class="product-details">
+        <div class="image-column">
+            <div class="main-image-wrapper">
+                <img [src]="selectedImage || product.images[0] || product.image" [alt]="product.type"
+                    class="main-image">
+            </div>
+            @if (product.images.length > 1) {
+            <div class="thumbnails-grid">
+                @for (img of product.images; track img) {
+                <div class="thumbnail" [class.active]="(selectedImage || product.images[0]) === img"
+                    (click)="selectImage(img)">
+                    <img [src]="img" alt="Thumbnail">
+                </div>
+                }
+            </div>
+            }
+        </div>
+        <div class="info-column">
+            <span class="brand">{{ product.brand }}</span>
+            <h1 class="h2 title">{{ product.type }}</h1>
+            @if (product.price) {
+            <div class="price">{{ product.price }} {{ product.price.includes('€') ? '' : '€' }}</div>
+            }
+
+            <p class="description">{{ product.description }}</p>
+
+            <div class="sizes">
+                <span class="label">Format :</span>
+                <div class="size-list">
+                    @for (size of product.sizes; track size) {
+                    <span class="size-badge">{{ size }}</span>
+                    }
+                </div>
+            </div>
+
+            <div class="actions">
+                <div class="quantity-selector">
+                    <label>Quantité :</label>
+                    <input type="number" min="1" [(ngModel)]="quantity" class="quantity-input">
+                </div>
+                <button class="btn btn-primary" (click)="addToCart()">Ajouter au panier</button>
+                <div class="note">Disponibilité : En stock</div>
+            </div>
+        </div>
+    </div>
+
+    @if (suggestions$ | async; as suggestions) {
+    @if (suggestions.length > 0) {
+    <div class="suggestions-section">
+        <h3 class="h3">Vous aimerez aussi</h3>
+        <div class="suggestions-grid">
+            @for (item of suggestions; track item.id) {
+            <div class="suggestion-card" [routerLink]="['/product', item.id]">
+                <div class="img-wrapper">
+                    <img [src]="item.image" [alt]="item.type">
+                </div>
+                <div class="info">
+                    <span class="type">{{ item.type }}</span>
+                    @if (item.price) {
+                    <span class="price">{{ item.price }} {{ item.price.includes('€') ? '' : '€' }}</span>
+                    }
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+    }
+    }
+</div>
+} @else if ((product$ | async) === null) {
+<div class="loading-state">
+    <p>Chargement du produit...</p>
+</div>
+} @else {
+<div class="not-found">
+    <h2>Produit introuvable</h2>
+    <a routerLink="/" class="btn btn-outline">Retour à la boutique</a>
+</div>
+}
