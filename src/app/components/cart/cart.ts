@@ -1,19 +1,28 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+<<<<<<< HEAD
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+=======
+import { RouterModule } from '@angular/router';
+>>>>>>> ba6eb11b141841fe260273da294f864f81be4fca
 import { CartService, CartItem } from '../../services/cart.service';
 
 @Component({
     selector: 'app-cart',
     standalone: true,
+<<<<<<< HEAD
     imports: [CommonModule, RouterModule, FormsModule],
+=======
+    imports: [CommonModule, RouterModule],
+>>>>>>> ba6eb11b141841fe260273da294f864f81be4fca
     templateUrl: './cart.html',
     styleUrls: ['./cart.scss']
 })
 export class CartComponent implements OnInit {
     cartItems: CartItem[] = [];
     total: number = 0;
+<<<<<<< HEAD
     orderSuccess: boolean = false;
 
     orderData = {
@@ -37,6 +46,13 @@ export class CartComponent implements OnInit {
             }
             this.loadCart();
         });
+=======
+
+    private cartService = inject(CartService);
+
+    ngOnInit() {
+        this.loadCart();
+>>>>>>> ba6eb11b141841fe260273da294f864f81be4fca
     }
 
     loadCart() {
@@ -77,6 +93,7 @@ export class CartComponent implements OnInit {
         this.loadCart();
     }
 
+<<<<<<< HEAD
     getCartSummaryForEmail(): string {
         const itemsList = this.cartItems.map(i =>
             `- ${i.quantity}x ${i.product.type} (${i.product.price})`
@@ -93,5 +110,15 @@ export class CartComponent implements OnInit {
 
     getCartSuccessUrl(): string {
         return window.location.origin + window.location.pathname + '?success=true';
+=======
+    checkout() {
+        // Redirect to Messenger for order
+        const message = `Bonjour, je souhaite commander : \n` +
+            this.cartItems.map(i => `- ${i.quantity}x ${i.product.type} (${i.product.price})`).join('\n') +
+            `\n\nTotal: ${this.total}€`;
+
+        // Encode for URL? simplified for now
+        window.open('https://m.me/61560562014105', '_blank');
+>>>>>>> ba6eb11b141841fe260273da294f864f81be4fca
     }
 }

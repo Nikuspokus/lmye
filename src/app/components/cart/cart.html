@@ -2,6 +2,7 @@
     <div class="container">
         <h1 class="h2 text-center mb-4">Votre Panier</h1>
 
+<<<<<<< HEAD
         @if (orderSuccess) {
         <div class="success-banner mb-4">
             <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
@@ -12,6 +13,8 @@
         </div>
         }
 
+=======
+>>>>>>> ba6eb11b141841fe260273da294f864f81be4fca
         <div *ngIf="cartItems.length > 0; else emptyCart" class="cart-container">
             <div class="cart-items">
                 <div *ngFor="let item of cartItems" class="cart-item">
@@ -51,6 +54,7 @@
                         <span>Total</span>
                         <span class="total-price">{{ total }}€</span>
                     </div>
+<<<<<<< HEAD
 
                     <div class="checkout-form-container">
                         <h4 class="h4 mb-3">Finaliser la commande</h4>
@@ -92,6 +96,10 @@
                     </div>
 
                     <button (click)="clearCart()" class="btn btn-outline btn-full mt-3">Vider le panier</button>
+=======
+                    <button (click)="checkout()" class="btn btn-primary btn-full">Commander via Messenger</button>
+                    <button (click)="clearCart()" class="btn btn-outline btn-full mt-2">Vider le panier</button>
+>>>>>>> ba6eb11b141841fe260273da294f864f81be4fca
                 </div>
             </div>
         </div>
