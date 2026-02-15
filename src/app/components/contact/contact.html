@@ -62,15 +62,18 @@
 
                     <div class="form-group">
                         <label for="subject">Sujet</label>
-                        <select id="subject" name="subject" [(ngModel)]="formData.subject">
-                            @if (formData.subject !== 'Informations' && formData.subject !== 'Passer une commande' &&
-                            formData.subject !== 'Un projet') {
-                            <option [value]="formData.subject">{{ formData.subject }}</option>
-                            }
-                            <option value="Informations">Informations</option>
-                            <option value="Passer une commande">Passer une commande</option>
-                            <option value="Un projet">Un projet</option>
-                        </select>
+                        <div class="custom-select-wrapper">
+                            <select id="subject" name="subject" [(ngModel)]="formData.subject">
+                                @if (formData.subject !== 'Informations' && formData.subject !== 'Passer une commande'
+                                &&
+                                formData.subject !== 'Un projet') {
+                                <option [value]="formData.subject">{{ formData.subject }}</option>
+                                }
+                                <option value="Informations">Informations</option>
+                                <option value="Passer une commande">Passer une commande</option>
+                                <option value="Un projet">Un projet</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div class="form-group">

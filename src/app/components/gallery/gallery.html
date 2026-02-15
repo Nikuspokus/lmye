@@ -8,10 +8,10 @@
         <div class="filters text-center mb-4">
             <button class="filter-btn" [class.active]="currentFilter === 'Tous'"
                 (click)="filterProducts('Tous')">Tous</button>
-            <button class="filter-btn" [class.active]="currentFilter === 'Sac'"
-                (click)="filterProducts('Sac')">Sacs</button>
-            <button class="filter-btn" [class.active]="currentFilter === 'Pochette'"
-                (click)="filterProducts('Pochette')">Pochettes</button>
+            @for (cat of categories$ | async; track cat.id) {
+            <button class="filter-btn" [class.active]="currentFilter === cat.name" (click)="filterProducts(cat.name)">{{
+                cat.name }}s</button>
+            }
         </div>
 
         <div class="product-grid">
@@ -24,7 +24,16 @@
                     <img [src]="product.image" [alt]="product.type">
                 </div>
                 <div class="product-info">
-                    <small class="brand">{{ product.brand }}</small>
+                    <div class="info-top">
+                        <small class="brand">{{ product.brand }}</small>
+                        @if (categories$ | async; as cats) {
+                        @let color = getCategoryColor(product.category, cats);
+                        <span class="category-badge" [style.background-color]="color"
+                            [style.color]="productService.getContrastColor(color)">
+                            {{ product.category }}
+                        </span>
+                        }
+                    </div>
                     <h3 class="product-name">{{ product.type }}</h3>
                     @if (product.price) {
                     <div class="price">{{ product.price }} {{ product.price.includes('€') ? '' : '€' }}</div>

@@ -2,8 +2,8 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { Observable, of } from 'rxjs';
-import { Product, ProductService } from '../../services/product.service';
+import { Observable, of, combineLatest } from 'rxjs';
+import { Product, Category, ProductService } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
 
 @Component({
@@ -14,8 +14,9 @@ import { CartService } from '../../services/cart.service';
   styleUrls: ['./product.scss']
 })
 export class ProductComponent implements OnInit {
-  product$: Observable<Product | undefined> = of(undefined); // Changed initialization
-  suggestions$: Observable<Product[]> = of([]); // Changed initialization
+  product$: Observable<Product | undefined> = of(undefined);
+  suggestions$: Observable<Product[]> = of([]);
+  categories$: Observable<Category[]> = of([]);
   quantity: number = 1;
   selectedImage: string | null = null; // Added property
   currentProduct: Product | undefined; // To hold resolved product for cart
@@ -24,7 +25,7 @@ export class ProductComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private productService: ProductService,
+    public productService: ProductService,
     private router: Router
   ) { }
 
@@ -47,6 +48,8 @@ export class ProductComponent implements OnInit {
         });
       }
     });
+
+    this.categories$ = this.productService.getCategories();
   }
 
   contactStore() {
@@ -72,5 +75,10 @@ export class ProductComponent implements OnInit {
 
   selectImage(url: string) {
     this.selectedImage = url;
+  }
+
+  getCategoryColor(categoryName: string, categories: Category[]): string {
+    const cat = categories.find(c => c.name === categoryName);
+    return cat ? cat.color : '#f0f0f0';
   }
 }

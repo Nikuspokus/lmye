@@ -2,49 +2,125 @@ import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Product, ProductService } from '../../services/product.service';
+import { Product, Category, ProductService } from '../../services/product.service';
 import { AuthService } from '../../services/auth.service';
-import { Observable } from 'rxjs';
+import { Observable, tap, shareReplay } from 'rxjs';
 
 @Component({
-    selector: 'app-admin-dashboard',
-    standalone: true,
-    imports: [CommonModule, ReactiveFormsModule, RouterModule],
-    template: `
+  selector: 'app-admin-dashboard',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  template: `
     <div class="admin-container">
       <header class="admin-header">
         <h1>Tableau de Bord Admin</h1>
         <button (click)="logout()" class="btn btn-logout">DÉCONNEXION</button>
       </header>
 
-      <div class="admin-grid">
-        <!-- Formulaire d'ajout/édition -->
-        <div class="form-section">
-          <h2>{{ editingId ? 'Modifier le produit' : 'Ajouter un produit' }}</h2>
-          <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
-            <div class="form-group">
-              <label>Marque / Titre</label>
-              <input formControlName="brand" placeholder="Ex: Création Artisanale">
+      <div class="dashboard-grid">
+        <!-- Formulaire et Gestion -->
+        <div class="form-scroll-container">
+          <!-- Gestion des Catégories -->
+          <div class="form-section mb-4 category-section" [class.collapsed]="isCategoryCollapsed">
+            <div class="section-header" (click)="isCategoryCollapsed = !isCategoryCollapsed">
+              <h2>Gestion des Catégories</h2>
+              <button class="chevron-circle">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                  <path [attr.d]="isCategoryCollapsed ? 'M19 9l-7 7-7-7' : 'M5 15l7-7 7 7'" />
+                </svg>
+              </button>
             </div>
 
-            <div class="form-group">
-              <label>Type / Nom</label>
-              <input formControlName="type" placeholder="Ex: Sac Cabas Unique">
-            </div>
+            @if (!isCategoryCollapsed) {
+              <div class="collapsible-content">
+                <form [formGroup]="categoryForm" (ngSubmit)="onAddCategory()" class="category-form">
+                  <div class="form-group">
+                    <label>Nom de la catégorie</label>
+                    <input formControlName="name" placeholder="Ex: Décoration, Bijoux...">
+                  </div>
+                  <div class="form-group">
+                    <label>Couleur du badge</label>
+                    <div class="color-picker-wrapper">
+                      <input type="color" formControlName="color">
+                      <span>{{ categoryForm.get('color')?.value }}</span>
+                    </div>
+                  </div>
+                  <div class="form-actions">
+                    <button type="submit" class="btn btn-secondary btn-small" [disabled]="categoryForm.invalid || isCategoryLoading">
+                      {{ isCategoryLoading ? 'EN COURS...' : (editingCategoryId ? 'METTRE À JOUR' : 'AJOUTER LA CATÉGORIE') }}
+                    </button>
+                    @if (editingCategoryId) {
+                      <button type="button" (click)="cancelCategoryEdit()" class="btn btn-secondary btn-small">ANNULER</button>
+                    }
+                  </div>
+                </form>
 
-            <div class="form-group">
-              <label>Catégorie</label>
-              <select formControlName="category">
-                <option value="Sac">Sac</option>
-                <option value="Pochette">Pochette</option>
-                <option value="Accessoire">Accessoire</option>
-              </select>
-            </div>
+                @if (categoryMessage) {
+                    <div class="form-message" [class.error]="isCategoryError">
+                        {{ categoryMessage }}
+                    </div>
+                }
 
-            <div class="form-group">
-              <label>Prix</label>
-              <input formControlName="price" placeholder="Ex: 145€">
-            </div>
+                <div class="categories-list mt-4">
+                  @for (cat of categories$ | async; track cat.id) {
+                    <div class="category-item">
+                      <span class="category-preview-badge" 
+                            [style.background-color]="cat.color"
+                            [style.color]="productService.getContrastColor(cat.color)">
+                        {{ cat.name }}
+                      </span>
+                      <div class="category-actions">
+                        <button (click)="editCategory(cat)" class="btn-icon btn-icon-edit small" title="Modifier">
+                          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                        </button>
+                        <button (click)="deleteCategory(cat.id!)" class="btn-icon btn-icon-delete small" title="Supprimer">
+                          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                        </button>
+                      </div>
+                    </div>
+                  } @empty {
+                    <div class="empty-state small">
+                      Aucune catégorie créée.
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+
+          <!-- Formulaire d'ajout/édition de produit -->
+          <div class="form-section">
+            <h2>{{ editingId ? 'Modifier le produit' : 'Ajouter un produit' }}</h2>
+            <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+              <div class="form-group">
+                <label>Marque / Titre</label>
+                <input formControlName="brand" placeholder="Ex: Création Artisanale">
+              </div>
+
+              <div class="form-group">
+                <label>Type / Nom</label>
+                <input formControlName="type" placeholder="Ex: Sac Cabas Unique">
+              </div>
+
+              <div class="form-group">
+                <label>Catégorie</label>
+                <div class="custom-select-wrapper">
+                  <select formControlName="category">
+                    <option value="">-- Choisir une catégorie --</option>
+                    @for (cat of categories$ | async; track cat.id) {
+                      <option [value]="cat.name">{{ cat.name }}</option>
+                    }
+                  </select>
+                </div>
+                @if ((categories$ | async)?.length === 0) {
+                  <small class="error-text">Veuillez d'abord créer au moins une catégorie haut-dessus.</small>
+                }
+              </div>
+
+              <div class="form-group">
+                <label>Prix</label>
+                <input formControlName="price" placeholder="Ex: 145€">
+              </div>
 
              <div class="form-group">
               <label>Description</label>
@@ -97,15 +173,18 @@ import { Observable } from 'rxjs';
               }
             </div>
             
-            @if (message) {
-                <div class="form-message" [class.error]="isError">
-                    {{ message }}
+            @if (productMessage) {
+                <div class="form-message" [class.error]="isProductError">
+                    {{ productMessage }}
                 </div>
             }
           </form>
         </div>
 
-        <!-- Liste des produits -->
+        
+
+      </div>
+      <!-- Liste des produits -->
         <div class="list-section">
             <div class="list-header">
                 <h2>Produits ({{ (products$ | async)?.length || 0 }})</h2>
@@ -122,12 +201,21 @@ import { Observable } from 'rxjs';
             }
 
             <div class="product-list">
-                @for (product of products$ | async; track product.id) {
+                <!-- On combine les produits et les catégories pour avoir les couleurs -->
+                @let products = products$ | async;
+                @let categories = categories$ | async;
+
+                @for (product of products; track product.id) {
                     <div class="product-item" [class.inactive]="!product.active">
                         <img [src]="product.image" alt="miniature">
                         <div class="details">
                             <span class="name">{{ product.type }}</span>
-                            <span class="category-badge">{{ product.category }}</span>
+                            @let catColor = getCategoryColor(product.category, categories || []);
+                            <span class="category-badge" 
+                                  [style.background-color]="catColor"
+                                  [style.color]="productService.getContrastColor(catColor)">
+                                {{ product.category }}
+                            </span>
                              <span class="price">
                                  @if (product.price) {
                                     {{ product.price }} {{ product.price.includes('€') ? '' : '€' }}
@@ -156,7 +244,7 @@ import { Observable } from 'rxjs';
                         </div>
                     </div>
                 } @empty {
-                    @if ((products$ | async) !== null) {
+                    @if (products !== null) {
                         <div class="empty-state">
                             Aucun produit trouvé. Ajoutez-en un !
                         </div>
@@ -164,18 +252,58 @@ import { Observable } from 'rxjs';
                 }
             </div>
         </div>
-      </div>
     </div>
   `,
-    styles: [`
+  styles: [`
     .admin-container { padding: 100px 2rem 2rem; max-width: 1400px; margin: 0 auto; font-family: 'Inter', sans-serif; background: #fafafa; min-height: 100vh; }
     .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; border-bottom: 1px solid #eee; padding-bottom: 1rem; }
-    .admin-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 2rem; }
-    @media(max-width: 1024px) { .admin-grid { grid-template-columns: 1fr; } }
+    .dashboard-grid { 
+      display: flex !important; 
+      flex-direction: row !important; 
+      gap: 2.5rem; 
+      align-items: start; 
+      width: 100%;
+    }
     
-    .form-section, .list-section { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+    .form-scroll-container { 
+      flex: 0 0 480px; 
+      width: 480px;
+      display: flex; 
+      flex-direction: column; 
+      gap: 2rem; 
+    }
+    
+    .list-section { 
+      flex: 1; 
+      min-width: 0; 
+      background: white; 
+      padding: 2rem; 
+      border-radius: 12px; 
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
+    }
+    
+    @media(max-width: 1000px) { 
+      .dashboard-grid { flex-direction: column !important; }
+      .form-scroll-container { flex: none; width: 100%; }
+    }
+
+    .form-section { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
     .list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; border-bottom: 1px solid #f0f0f0; padding-bottom: 1rem; }
     .list-actions { display: flex; gap: 0.8rem; }
+
+    .mb-4 { margin-bottom: 1.5rem; }
+    .mt-4 { margin-top: 1.5rem; }
+
+    .category-form { display: flex; flex-direction: column; gap: 1rem; padding: 1rem; background: #fdfdfd; border: 1px dashed #ccc; border-radius: 8px; }
+    .color-picker-wrapper { display: flex; align-items: center; gap: 1rem; }
+    .color-picker-wrapper input[type="color"] { width: 50px; height: 40px; border: none; padding: 0; background: none; cursor: pointer; }
+    .categories-list { display: flex; flex-wrap: wrap; gap: 0.8rem; }
+    .category-item { display: flex; align-items: center; gap: 0.8rem; background: #fff; padding: 6px 12px; border-radius: 20px; border: 1px solid #eee; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+    .category-preview-badge { font-size: 0.75rem; color: white; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,0.2); letter-spacing: 0.5px; }
+    .category-actions { display: flex; gap: 0.4rem; border-left: 1px solid #eee; padding-left: 0.4rem; }
+    .btn-icon.small { padding: 4px; border-radius: 50%; }
+    .btn-icon-edit:hover { background: #eef2ff; color: #4f46e5; }
+    .error-text { color: #c62828; font-size: 0.8rem; margin-top: 5px; font-weight: 500; }
 
     .form-group { margin-bottom: 1.5rem; display: flex; flex-direction: column; }
     .form-group label { font-weight: 600; margin-bottom: 0.6rem; font-size: 0.95rem; color: #444; }
@@ -210,6 +338,12 @@ import { Observable } from 'rxjs';
     .btn-icon { background: #f5f5f5; border: none; cursor: pointer; padding: 10px; display: flex; align-items: center; justify-content: center; color: #555; transition: all 0.2s; border-radius: 10px; }
     .btn-icon:hover { background: #eee; color: #7a5dfa; }
     .btn-icon-delete:hover { background: #ffebeb; color: #ff4d4d; }
+
+    .section-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+    .section-header h2 { margin: 0; }
+
+    .category-section.collapsed { padding-bottom: 1rem; }
+    .collapsible-content { margin-top: 1.5rem; border-top: 1px solid #f0f0f0; padding-top: 1.5rem; }
 
     /* --- SWITCH CSS (NEW & ROBUST) --- */
     .visibility-status { display: flex; align-items: center; gap: 0.8rem; padding-right: 1rem; border-right: 1px solid #eee; min-width: 140px; }
@@ -253,240 +387,358 @@ import { Observable } from 'rxjs';
   `]
 })
 export class AdminDashboardComponent {
-    authService = inject(AuthService);
-    productService = inject(ProductService);
-    router = inject(Router);
-    fb = inject(FormBuilder);
-    cdr = inject(ChangeDetectorRef);
+  authService = inject(AuthService);
+  productService = inject(ProductService);
+  router = inject(Router);
+  fb = inject(FormBuilder);
+  cdr = inject(ChangeDetectorRef);
 
-    constructor() {
-        console.log('[Admin] Composant initialisé (v2)');
+  constructor() {
+    console.log('[Admin] Composant initialisé (v2)');
+  }
+
+  products$: Observable<Product[]> = this.productService.getProducts().pipe(
+    tap(products => console.log('🛒 [Admin] Produits reçus:', products?.length)),
+    shareReplay(1)
+  );
+  categories$: Observable<Category[]> = this.productService.getCategories().pipe(
+    tap(cats => console.log('📂 [Admin] Catégories reçues:', cats?.length, cats)),
+    shareReplay(1)
+  );
+
+  productForm: FormGroup = this.fb.group({
+    brand: ['', Validators.required],
+    type: ['', Validators.required],
+    category: ['', Validators.required],
+    price: [''],
+    description: ['', Validators.required],
+    badge: [''],
+    image1: ['', Validators.required],
+    image2: [''],
+    image3: [''],
+    isNew: [false]
+  });
+
+  editingId: string | null = null;
+  editingCategoryId: string | null = null;
+  isUploading = false;
+  isCategoryLoading = false;
+  isCategoryCollapsed = true; // Default to collapsed to save space
+  uploadProgress = 0;
+
+  productMessage: string = '';
+  isProductError: boolean = false;
+
+  categoryMessage: string = '';
+  isCategoryError: boolean = false;
+
+  previews: (string | null)[] = [null, null, null];
+
+  categoryForm: FormGroup = this.fb.group({
+    name: ['', Validators.required],
+    color: ['#7a5dfa', Validators.required]
+  });
+
+  async logout() {
+    await this.authService.logout();
+    this.router.navigate(['/']);
+  }
+
+  async onFileSelected(event: any, index: number) {
+    const file = event.target.files[0];
+    if (file) {
+      this.isUploading = true;
+      try {
+        const url = await this.productService.uploadImage(file);
+        this.productForm.get('image' + index)?.setValue(url);
+        this.previews[index - 1] = url;
+        this.productMessage = `Image ${index} téléchargée !`;
+        this.isProductError = false;
+      } catch (error) {
+        console.error('Upload failed', error);
+        this.productMessage = 'Erreur lors du téléchargement de l\'image.';
+        this.isProductError = true;
+      } finally {
+        this.isUploading = false;
+      }
+    }
+  }
+
+  onUrlInput(index: number) {
+    const url = this.productForm.get('image' + index)?.value;
+    if (url && url.startsWith('http')) {
+      this.previews[index - 1] = url;
+    }
+  }
+
+  removeImage(index: number) {
+    this.productForm.get('image' + index)?.setValue('');
+    this.previews[index - 1] = null;
+  }
+
+  async onSubmit() {
+    console.log('[Admin] Tentative de soumission du formulaire produit...');
+    this.isProductError = false;
+
+    if (this.productForm.invalid) {
+      console.warn('[Admin] Product form invalid');
+      const invalidControls = [];
+      const controls = this.productForm.controls;
+      for (const name in controls) {
+        if (controls[name].invalid) {
+          invalidControls.push(name);
+        }
+      }
+
+      const labels: { [key: string]: string } = {
+        brand: 'Marque',
+        type: 'Type/Nom',
+        category: 'Catégorie',
+        price: 'Prix',
+        description: 'Description',
+        image1: 'Image principale'
+      };
+
+      const missingLabels = invalidControls.map(name => labels[name] || name);
+      this.productMessage = `Formulaire incomplet. Veuillez remplir : ${missingLabels.join(', ')}`;
+      this.isProductError = true;
+      return;
     }
 
-    products$: Observable<Product[]> = this.productService.getProducts();
+    this.isUploading = true;
+    this.productMessage = 'Enregistrement en cours...';
+    this.isProductError = false;
+    this.cdr.detectChanges();
 
-    productForm: FormGroup = this.fb.group({
-        brand: ['', Validators.required],
-        type: ['', Validators.required],
-        category: ['Sac', Validators.required],
-        price: [''],
-        description: ['', Validators.required],
-        badge: [''],
-        image1: ['', Validators.required],
-        image2: [''],
-        image3: [''],
-        isNew: [false]
+    const formVal = this.productForm.value;
+    const imagesArray = [formVal.image1, formVal.image2, formVal.image3].filter(img => !!img);
+
+    const productData: Product = {
+      brand: formVal.brand,
+      type: formVal.type,
+      category: formVal.category,
+      price: formVal.price,
+      description: formVal.description,
+      badge: formVal.badge || '',
+      badgeColor: 'accent-purple',
+      image: formVal.image1, // Primary
+      images: imagesArray,
+      sizes: ['Taille Unique'],
+      active: true,
+      isNew: formVal.isNew || false
+    };
+
+    console.log('[Admin] Données du produit prêtes :', productData);
+
+    try {
+      if (this.editingId) {
+        await this.productService.updateProduct(this.editingId, productData);
+        this.productMessage = 'Produit mis à jour avec succès !';
+        this.isProductError = false;
+      } else {
+        await this.productService.addProduct(productData);
+        this.productMessage = 'Produit ajouté avec succès !';
+        this.isProductError = false;
+      }
+      this.resetForm();
+    } catch (error: any) {
+      console.error('[Admin] ÉCHEC de l\'opération :', error);
+      this.productMessage = `Erreur : ${error.message || 'Problème de connexion à Firestore'}`;
+      this.isProductError = true;
+    } finally {
+      this.isUploading = false;
+      this.cdr.detectChanges();
+    }
+  }
+
+  editProduct(product: Product) {
+    if (!product.id) return;
+    this.editingId = product.id;
+
+    // Prepare form data
+    const formData = {
+      ...product,
+      image1: product.images?.[0] || product.image,
+      image2: product.images?.[1] || '',
+      image3: product.images?.[2] || ''
+    };
+
+    this.productForm.patchValue({
+      ...formData,
+      isNew: product.isNew || false
     });
+    this.previews = [
+      product.images?.[0] || product.image,
+      product.images?.[1] || null,
+      product.images?.[2] || null
+    ];
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
-    editingId: string | null = null;
-    isUploading = false;
-    uploadProgress = 0;
-    message: string = '';
-    isError: boolean = false;
-    previews: (string | null)[] = [null, null, null];
+  cancelEdit() {
+    this.resetForm();
+  }
 
-    async logout() {
-        await this.authService.logout();
-        this.router.navigate(['/']);
+  getCategoryColor(categoryName: string, categories: Category[]): string {
+    const cat = categories.find(c => c.name === categoryName);
+    return cat ? cat.color : '#f0f0f0';
+  }
+
+  private resetForm() {
+    this.editingId = null;
+    this.productForm.reset({ category: '' });
+    this.previews = [null, null, null];
+    this.cdr.detectChanges();
+    setTimeout(() => {
+      if (!this.isProductError) this.productMessage = '';
+      this.cdr.detectChanges();
+    }, 3000);
+  }
+
+  async onAddCategory() {
+    console.log('[Admin] onAddCategory called, editingCategoryId:', this.editingCategoryId);
+    if (this.categoryForm.invalid) {
+      console.warn('[Admin] Category form invalid');
+      return;
     }
 
-    async onFileSelected(event: any, index: number) {
-        const file = event.target.files[0];
-        if (file) {
-            this.isUploading = true;
-            try {
-                const url = await this.productService.uploadImage(file);
-                this.productForm.get('image' + index)?.setValue(url);
-                this.previews[index - 1] = url;
-                this.message = `Image ${index} téléchargée !`;
-                this.isError = false;
-            } catch (error) {
-                console.error('Upload failed', error);
-                this.message = 'Erreur lors du téléchargement de l\'image.';
-                this.isError = true;
-            } finally {
-                this.isUploading = false;
-            }
-        }
+    this.isCategoryLoading = true;
+    this.categoryMessage = this.editingCategoryId ? 'Mise à jour de la catégorie...' : 'Ajout de la catégorie...';
+    this.isCategoryError = false;
+    this.cdr.detectChanges();
+
+    try {
+      const catData = this.categoryForm.value;
+      if (this.editingCategoryId) {
+        await this.productService.updateCategory(this.editingCategoryId, catData);
+        this.categoryMessage = 'Catégorie mise à jour !';
+      } else {
+        await this.productService.addCategory(catData);
+        this.categoryMessage = 'Catégorie ajoutée !';
+      }
+      this.editingCategoryId = null;
+      this.categoryForm.reset({ color: '#7a5dfa' });
+      this.isCategoryError = false;
+    } catch (error: any) {
+      console.error('[Admin] Error saving category:', error);
+      this.categoryMessage = 'Erreur : ' + (error.message || 'Firestore error');
+      this.isCategoryError = true;
+    } finally {
+      this.isCategoryLoading = false;
+      this.cdr.detectChanges();
+      setTimeout(() => {
+        if (!this.isCategoryError) this.categoryMessage = '';
+        this.cdr.detectChanges();
+      }, 3000);
     }
+  }
 
-    onUrlInput(index: number) {
-        const url = this.productForm.get('image' + index)?.value;
-        if (url && url.startsWith('http')) {
-            this.previews[index - 1] = url;
-        }
+  editCategory(cat: Category) {
+    if (!cat.id) return;
+    this.editingCategoryId = cat.id;
+    this.categoryForm.patchValue({
+      name: cat.name,
+      color: cat.color
+    });
+    this.categoryMessage = `Modification de : ${cat.name}`;
+    this.isCategoryError = false;
+    this.cdr.detectChanges();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  cancelCategoryEdit() {
+    this.editingCategoryId = null;
+    this.categoryForm.reset({ color: '#7a5dfa' });
+    this.categoryMessage = '';
+    this.isCategoryError = false;
+    this.cdr.detectChanges();
+  }
+
+  async deleteCategory(id: string) {
+    if (confirm('Supprimer cette catégorie ? Les produits resteront dans cette catégorie mais elle n\'existera plus dans la liste.')) {
+      this.isCategoryLoading = true;
+      this.cdr.detectChanges();
+      try {
+        await this.productService.deleteCategory(id);
+        this.categoryMessage = 'Catégorie supprimée.';
+        this.isCategoryError = false;
+      } catch (error: any) {
+        console.error('Error deleting category', error);
+        this.categoryMessage = 'Erreur : ' + (error.message || 'Firestore error');
+        this.isCategoryError = true;
+      } finally {
+        this.isCategoryLoading = false;
+        this.cdr.detectChanges();
+        setTimeout(() => {
+          if (!this.isCategoryError) this.categoryMessage = '';
+          this.cdr.detectChanges();
+        }, 3000);
+      }
     }
+  }
 
-    removeImage(index: number) {
-        this.productForm.get('image' + index)?.setValue('');
-        this.previews[index - 1] = null;
+  async toggleVisibility(product: Product) {
+    if (!product.id) return;
+    try {
+      await this.productService.updateProduct(product.id, { active: !product.active });
+      console.log(`Product ${product.id} visibility toggled to ${!product.active}`);
+    } catch (error) {
+      console.error('Toggle visibility failed', error);
     }
+  }
 
-    async onSubmit() {
-        console.log('[Admin] Tentative de soumission du formulaire...');
-        this.isError = false;
-
-        if (this.productForm.invalid) {
-            console.warn('[Admin] Formulaire INVALIDE. Vérification des erreurs...');
-            const invalidControls = [];
-            const controls = this.productForm.controls;
-            for (const name in controls) {
-                if (controls[name].invalid) {
-                    invalidControls.push(name);
-                }
-            }
-            console.warn('[Admin] Champs invalides :', invalidControls);
-
-            // Traduction des noms de champs pour l'utilisateur
-            const labels: { [key: string]: string } = {
-                brand: 'Marque',
-                type: 'Type/Nom',
-                category: 'Catégorie',
-                price: 'Prix',
-                description: 'Description',
-                image1: 'Image principale'
-            };
-
-            const missingLabels = invalidControls.map(name => labels[name] || name);
-            this.message = `Formulaire incomplet. Veuillez remplir : ${missingLabels.join(', ')}`;
-            this.isError = true;
-            return;
-        }
-
-        this.isUploading = true;
-        this.message = 'Enregistrement en cours...';
-        this.isError = false;
-
-        const formVal = this.productForm.value;
-        const imagesArray = [formVal.image1, formVal.image2, formVal.image3].filter(img => !!img);
-
-        const productData: Product = {
-            brand: formVal.brand,
-            type: formVal.type,
-            category: formVal.category,
-            price: formVal.price,
-            description: formVal.description,
-            badge: formVal.badge || '',
-            badgeColor: 'accent-purple',
-            image: formVal.image1, // Primary
-            images: imagesArray,
-            sizes: ['Taille Unique'],
-            active: true,
-            isNew: formVal.isNew || false
-        };
-
-        console.log('[Admin] Données du produit prêtes :', productData);
-
-        try {
-            if (this.editingId) {
-                console.log(`[Admin] Mise à jour du produit ${this.editingId}...`);
-                await this.productService.updateProduct(this.editingId, productData);
-                this.message = 'Produit mis à jour avec succès !';
-                this.isError = false;
-            } else {
-                console.log('[Admin] Ajout d\'un nouveau produit...');
-                await this.productService.addProduct(productData);
-                this.message = 'Produit ajouté avec succès !';
-                this.isError = false;
-            }
-            this.resetForm();
-            this.cdr.detectChanges();
-        } catch (error: any) {
-            console.error('[Admin] ÉCHEC de l\'opération :', error);
-            this.message = `Erreur : ${error.message || 'Problème de connexion à Firestore'}`;
-            this.isError = true;
-        } finally {
-            this.isUploading = false;
-            this.cdr.detectChanges();
-        }
+  async deleteProduct(product: Product) {
+    if (!product.id) return;
+    if (confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
+      try {
+        await this.productService.deleteProduct(product.id);
+        console.log(`Product ${product.id} deleted.`);
+      } catch (error) {
+        console.error('Error deleting product', error);
+      }
     }
+  }
 
-    editProduct(product: Product) {
-        if (!product.id) return;
-        this.editingId = product.id;
+  async resetEverything() {
+    if (!confirm('ATTENTION: Cela va supprimer TOUS les produits de la base de données. Continuer ?')) return;
 
-        // Prepare form data
-        const formData = {
-            ...product,
-            image1: product.images?.[0] || product.image,
-            image2: product.images?.[1] || '',
-            image3: product.images?.[2] || ''
-        };
-
-        this.productForm.patchValue({
-            ...formData,
-            isNew: product.isNew || false
-        });
-        this.previews = [
-            product.images?.[0] || product.image,
-            product.images?.[1] || null,
-            product.images?.[2] || null
-        ];
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+    this.isUploading = true;
+    try {
+      await this.productService.deleteAllProducts();
+      this.productMessage = 'Base de données vidée !';
+      this.isProductError = false;
+      this.resetForm();
+    } catch (error) {
+      console.error('Reset failed', error);
+      this.productMessage = 'Erreur lors de la réinitialisation.';
+      this.isProductError = true;
+    } finally {
+      this.isUploading = false;
     }
+  }
 
-    cancelEdit() {
-        this.resetForm();
+  async seedData() {
+    if (confirm('Voulez-vous restaurer les produits de démonstration ?')) {
+      this.isUploading = true;
+      this.productMessage = 'Restauration en cours...';
+      this.isProductError = false;
+      this.cdr.detectChanges();
+      try {
+        await this.productService.seedProducts();
+        this.productMessage = 'Produits de démonstration restaurés !';
+        this.isProductError = false;
+      } catch (error) {
+        console.error('Seed failed', error);
+        this.productMessage = 'Erreur lors de la restauration.';
+        this.isProductError = true;
+      } finally {
+        this.isUploading = false;
+        this.cdr.detectChanges();
+        setTimeout(() => {
+          if (!this.isProductError) this.productMessage = '';
+          this.cdr.detectChanges();
+        }, 3000);
+      }
     }
-
-    private resetForm() {
-        this.editingId = null;
-        this.productForm.reset({ category: 'Sac' });
-        this.previews = [null, null, null];
-        setTimeout(() => this.message = '', 3000);
-    }
-
-    async toggleVisibility(product: Product) {
-        if (!product.id) return;
-        try {
-            await this.productService.updateProduct(product.id, { active: !product.active });
-            console.log(`Product ${product.id} visibility toggled to ${!product.active}`);
-        } catch (error) {
-            console.error('Toggle visibility failed', error);
-        }
-    }
-
-    async deleteProduct(product: Product) {
-        if (!product.id) return;
-        if (confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
-            try {
-                await this.productService.deleteProduct(product.id);
-                console.log(`Product ${product.id} deleted.`);
-            } catch (error) {
-                console.error('Error deleting product', error);
-            }
-        }
-    }
-
-    async resetEverything() {
-        if (!confirm('ATTENTION: Cela va supprimer TOUS les produits de la base de données. Continuer ?')) return;
-
-        this.isUploading = true;
-        try {
-            await this.productService.deleteAllProducts();
-            this.message = 'Base de données vidée !';
-            this.resetForm();
-        } catch (error) {
-            console.error('Reset failed', error);
-            this.message = 'Erreur lors de la réinitialisation.';
-        } finally {
-            this.isUploading = false;
-        }
-    }
-
-    async seedData() {
-        if (confirm('Voulez-vous restaurer les produits de démonstration ?')) {
-            this.isUploading = true;
-            try {
-                await this.productService.seedProducts();
-                this.message = 'Produits de démonstration restaurés !';
-            } catch (error) {
-                console.error('Seed failed', error);
-                this.message = 'Erreur lors de la restauration.';
-            } finally {
-                this.isUploading = false;
-                this.cdr.detectChanges();
-            }
-        }
-    }
+  }
 }
