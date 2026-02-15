@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { Auth, getRedirectResult } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-login',
@@ -31,7 +32,18 @@ export class LoginComponent {
   router = inject(Router);
 
   constructor() {
-    // Rediriger automatiquement si déjà connecté (utile après le redirect)
+    const auth = inject(Auth);
+
+    // Gérer le résultat de la redirection (plus robuste pour Firebase)
+    getRedirectResult(auth).then((result) => {
+      if (result?.user) {
+        this.router.navigate(['/admin-lmye']);
+      }
+    }).catch((error) => {
+      console.error('Erreur retour redirect', error);
+    });
+
+    // Écouter l'état au cas où (persistance auto)
     this.authService.user$.subscribe(user => {
       if (user) {
         this.router.navigate(['/admin-lmye']);
@@ -42,7 +54,6 @@ export class LoginComponent {
   async login() {
     try {
       await this.authService.loginWithGoogle();
-      // Avec signInWithRedirect, le code suivant n'est pas exécuté car le navigateur change de page
     } catch (error: any) {
       console.error('Login error', error);
       alert(`Erreur de connexion : ${error.code || error.message || 'Erreur inconnue'}`);
