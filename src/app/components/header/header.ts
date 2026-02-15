@@ -13,4 +13,13 @@ import { RouterModule } from '@angular/router';
 export class HeaderComponent {
   cartService = inject(CartService);
   cartCount$ = this.cartService.cartCount$;
+  isMenuOpen = false;
+
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  closeMenu() {
+    this.isMenuOpen = false;
+  }
 }
