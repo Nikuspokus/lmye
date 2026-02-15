@@ -30,10 +30,19 @@ export class LoginComponent {
   authService = inject(AuthService);
   router = inject(Router);
 
+  constructor() {
+    // Rediriger automatiquement si déjà connecté (utile après le redirect)
+    this.authService.user$.subscribe(user => {
+      if (user) {
+        this.router.navigate(['/admin-lmye']);
+      }
+    });
+  }
+
   async login() {
     try {
       await this.authService.loginWithGoogle();
-      this.router.navigate(['/admin-lmye']);
+      // Avec signInWithRedirect, le code suivant n'est pas exécuté car le navigateur change de page
     } catch (error: any) {
       console.error('Login error', error);
       alert(`Erreur de connexion : ${error.code || error.message || 'Erreur inconnue'}`);

@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Auth, authState, signInWithPopup, GoogleAuthProvider, signOut, User } from '@angular/fire/auth';
+import { Auth, authState, signInWithRedirect, GoogleAuthProvider, signOut, User } from '@angular/fire/auth';
 import { Observable, of } from 'rxjs';
 import { traceUntilFirst } from '@angular/fire/performance';
 import { map } from 'rxjs/operators';
@@ -16,7 +16,7 @@ export class AuthService {
     async loginWithGoogle() {
         const provider = new GoogleAuthProvider();
         try {
-            await signInWithPopup(this.auth, provider);
+            await signInWithRedirect(this.auth, provider);
         } catch (error) {
             console.error('Login failed', error);
             throw error;
