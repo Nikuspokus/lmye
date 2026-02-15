@@ -162,8 +162,8 @@ import { Observable } from 'rxjs';
     </div>
   `,
     styles: [`
-    .admin-container { padding: 2rem; max-width: 1400px; margin: 0 auto; font-family: 'Inter', sans-serif; background: #fafafa; min-height: 100vh; }
-    .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+    .admin-container { padding: 100px 2rem 2rem; max-width: 1400px; margin: 0 auto; font-family: 'Inter', sans-serif; background: #fafafa; min-height: 100vh; }
+    .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; border-bottom: 1px solid #eee; padding-bottom: 1rem; }
     .admin-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 2rem; }
     @media(max-width: 1024px) { .admin-grid { grid-template-columns: 1fr; } }
     
@@ -276,7 +276,7 @@ export class AdminDashboardComponent {
 
     async logout() {
         await this.authService.logout();
-        this.router.navigate(['/login']);
+        this.router.navigate(['/']);
     }
 
     async onFileSelected(event: any, index: number) {

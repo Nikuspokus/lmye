@@ -1,50 +1,58 @@
-import { Injectable, inject } from '@angular/core';
-import { Auth, authState, signInWithRedirect, getRedirectResult, GoogleAuthProvider, signOut, User } from '@angular/fire/auth';
-import { Observable, BehaviorSubject, from } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { Injectable, inject, NgZone } from '@angular/core';
+import { Auth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut, User } from '@angular/fire/auth';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { shareReplay } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Injectable({
     providedIn: 'root',
 })
 export class AuthService {
     private auth: Auth = inject(Auth);
+    private router = inject(Router);
+    private ngZone = inject(NgZone);
 
-    // Un Subject pour suivre si l'initialisation (dont le redirect) est terminée
-    private isInitializedContent = new BehaviorSubject<boolean>(false);
-    isInitialized$ = this.isInitializedContent.asObservable();
+    private userSubject = new BehaviorSubject<User | null>(null);
+    public user$ = this.userSubject.asObservable().pipe(shareReplay(1));
 
-    user$: Observable<User | null> = authState(this.auth).pipe(
-        shareReplay(1)
-    );
+    private initializedSubject = new BehaviorSubject<boolean>(false);
+    public isInitialized$ = this.initializedSubject.asObservable();
 
     constructor() {
-        // Gérer le résultat du redirect dès l'init du service
-        getRedirectResult(this.auth).then((result) => {
-            if (result) {
-                console.log('Redirect result processed successfully');
+        // Écouter l'état de connexion de manière fiable
+        onAuthStateChanged(this.auth, (user) => {
+            this.userSubject.next(user);
+            if (!this.initializedSubject.value) {
+                this.initializedSubject.next(true);
             }
-            this.isInitializedContent.next(true);
-        }).catch((error) => {
-            console.error('Error processing redirect result', error);
-            this.isInitializedContent.next(true);
         });
     }
 
     async loginWithGoogle() {
         const provider = new GoogleAuthProvider();
+        provider.setCustomParameters({ prompt: 'select_account' });
+
         try {
-            await signInWithRedirect(this.auth, provider);
+            const result = await signInWithPopup(this.auth, provider);
+            if (result.user) {
+                this.ngZone.run(() => {
+                    this.router.navigate(['/admin-lmye']);
+                });
+            }
         } catch (error) {
-            console.error('Login failed', error);
+            console.error('Erreur Login:', error);
             throw error;
         }
     }
 
     async logout() {
         await signOut(this.auth);
+        this.ngZone.run(() => {
+            this.router.navigate(['/']);
+        });
     }
 
-    get isLoggedIn(): Observable<boolean> {
-        return this.user$.pipe(map(user => !!user));
+    get currentUser(): User | null {
+        return this.auth.currentUser;
     }
 }

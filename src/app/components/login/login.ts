@@ -11,9 +11,17 @@ import { Auth, getRedirectResult } from '@angular/fire/auth';
   template: `
     <div class="login-container">
       <h2>Connexion Administration</h2>
-      <button (click)="login()" class="btn btn-primary">
-         Se connecter avec Google
-      </button>
+      
+      <div *ngIf="!(authService.isInitialized$ | async)" class="status-box">
+        Vérification de la session...
+      </div>
+
+      <ng-container *ngIf="authService.isInitialized$ | async">
+        <button (click)="login()" class="btn btn-primary" [disabled]="isLoading">
+           {{ isLoading ? 'Connexion en cours...' : 'Se connecter avec Google' }}
+        </button>
+        <p *ngIf="error" class="error-msg">{{ error }}</p>
+      </ng-container>
     </div>
   `,
   styles: [`
@@ -25,15 +33,18 @@ import { Auth, getRedirectResult } from '@angular/fire/auth';
       height: 80vh;
       gap: 2rem;
     }
+    .status-box { padding: 1rem; color: #666; font-style: italic; }
+    .error-msg { color: #ff4d4d; font-weight: 600; margin-top: 1rem; }
   `]
 })
 export class LoginComponent {
   authService = inject(AuthService);
   router = inject(Router);
+  isLoading = false;
+  error: string | null = null;
 
   constructor() {
-    // Rediriger automatiquement dès que l'utilisateur est détecté
-    // Cela gère aussi bien le retour de redirect que le login local
+    // Rediriger si une session est déjà active
     this.authService.user$.subscribe(user => {
       if (user) {
         this.router.navigate(['/admin-lmye']);
@@ -42,11 +53,15 @@ export class LoginComponent {
   }
 
   async login() {
+    this.isLoading = true;
+    this.error = null;
     try {
       await this.authService.loginWithGoogle();
+      // Le AuthService gère la navigation après succès
     } catch (error: any) {
-      console.error('Login error', error);
-      alert(`Erreur de connexion : ${error.code || error.message || 'Erreur inconnue'}`);
+      this.isLoading = false;
+      this.error = "Échec de la connexion. Veuillez réessayer.";
+      console.error('Login error:', error);
     }
   }
 }
