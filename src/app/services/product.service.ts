@@ -10,7 +10,7 @@ export interface Product {
     brand: string;
     type: string;
     category: 'Sac' | 'Pochette' | 'Accessoire';
-    price: string;
+    price?: string;
     description: string;
     badge?: string;
     badgeColor?: string;

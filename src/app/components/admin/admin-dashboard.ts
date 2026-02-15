@@ -89,7 +89,7 @@ import { Observable } from 'rxjs';
             </div>
 
             <div class="form-actions">
-              <button type="submit" class="btn btn-primary" [disabled]="productForm.invalid || isUploading">
+              <button type="button" (click)="onSubmit()" class="btn btn-primary">
                 {{ editingId ? 'Mettre à jour' : 'Ajouter le produit' }}
               </button>
               @if (editingId) {
@@ -98,7 +98,7 @@ import { Observable } from 'rxjs';
             </div>
             
             @if (message) {
-                <div class="form-message" [class.error]="message.includes('Erreur')">
+                <div class="form-message" [class.error]="isError">
                     {{ message }}
                 </div>
             }
@@ -128,7 +128,13 @@ import { Observable } from 'rxjs';
                         <div class="details">
                             <span class="name">{{ product.type }}</span>
                             <span class="category-badge">{{ product.category }}</span>
-                            <span class="price">{{ product.price }} {{ product.price.includes('€') ? '' : '€' }}</span>
+                             <span class="price">
+                                 @if (product.price) {
+                                    {{ product.price }} {{ product.price.includes('€') ? '' : '€' }}
+                                 } @else {
+                                    Prix sur demande
+                                 }
+                             </span>
                             @if (product.isNew) {
                                 <span class="new-badge">Nouveauté</span>
                             }
@@ -238,7 +244,7 @@ import { Observable } from 'rxjs';
     .btn-small { padding: 0.5rem 1rem; font-size: 0.8rem; }
 
     .form-message { margin-top: 1.5rem; padding: 1rem; border-radius: 8px; background: #e8f5e9; color: #2e7d32; font-size: 0.95rem; font-weight: 500; border-left: 4px solid #2e7d32; }
-    .form-message.error { background: #ffebee; color: #c62828; border-color: #c62828; }
+    .form-message.error { background: #ffebee; color: #c62828; border-color: #c62828; border-left-color: #c62828; }
 
     .checkbox-group { display: flex; flex-direction: row !important; align-items: center; gap: 1rem; margin-top: 0.5rem; }
     .label-text { font-weight: 600; color: #444; }
@@ -253,13 +259,17 @@ export class AdminDashboardComponent {
     fb = inject(FormBuilder);
     cdr = inject(ChangeDetectorRef);
 
+    constructor() {
+        console.log('[Admin] Composant initialisé (v2)');
+    }
+
     products$: Observable<Product[]> = this.productService.getProducts();
 
     productForm: FormGroup = this.fb.group({
         brand: ['', Validators.required],
         type: ['', Validators.required],
         category: ['Sac', Validators.required],
-        price: ['', Validators.required],
+        price: [''],
         description: ['', Validators.required],
         badge: [''],
         image1: ['', Validators.required],
@@ -272,6 +282,7 @@ export class AdminDashboardComponent {
     isUploading = false;
     uploadProgress = 0;
     message: string = '';
+    isError: boolean = false;
     previews: (string | null)[] = [null, null, null];
 
     async logout() {
@@ -288,9 +299,11 @@ export class AdminDashboardComponent {
                 this.productForm.get('image' + index)?.setValue(url);
                 this.previews[index - 1] = url;
                 this.message = `Image ${index} téléchargée !`;
+                this.isError = false;
             } catch (error) {
                 console.error('Upload failed', error);
-                this.message = 'Erreur upload.';
+                this.message = 'Erreur lors du téléchargement de l\'image.';
+                this.isError = true;
             } finally {
                 this.isUploading = false;
             }
@@ -310,10 +323,39 @@ export class AdminDashboardComponent {
     }
 
     async onSubmit() {
-        if (this.productForm.invalid) return;
+        console.log('[Admin] Tentative de soumission du formulaire...');
+        this.isError = false;
+
+        if (this.productForm.invalid) {
+            console.warn('[Admin] Formulaire INVALIDE. Vérification des erreurs...');
+            const invalidControls = [];
+            const controls = this.productForm.controls;
+            for (const name in controls) {
+                if (controls[name].invalid) {
+                    invalidControls.push(name);
+                }
+            }
+            console.warn('[Admin] Champs invalides :', invalidControls);
+
+            // Traduction des noms de champs pour l'utilisateur
+            const labels: { [key: string]: string } = {
+                brand: 'Marque',
+                type: 'Type/Nom',
+                category: 'Catégorie',
+                price: 'Prix',
+                description: 'Description',
+                image1: 'Image principale'
+            };
+
+            const missingLabels = invalidControls.map(name => labels[name] || name);
+            this.message = `Formulaire incomplet. Veuillez remplir : ${missingLabels.join(', ')}`;
+            this.isError = true;
+            return;
+        }
 
         this.isUploading = true;
-        this.message = 'Enregistrement...';
+        this.message = 'Enregistrement en cours...';
+        this.isError = false;
 
         const formVal = this.productForm.value;
         const imagesArray = [formVal.image1, formVal.image2, formVal.image3].filter(img => !!img);
@@ -333,20 +375,29 @@ export class AdminDashboardComponent {
             isNew: formVal.isNew || false
         };
 
+        console.log('[Admin] Données du produit prêtes :', productData);
+
         try {
             if (this.editingId) {
+                console.log(`[Admin] Mise à jour du produit ${this.editingId}...`);
                 await this.productService.updateProduct(this.editingId, productData);
-                this.message = 'Produit mis à jour !';
+                this.message = 'Produit mis à jour avec succès !';
+                this.isError = false;
             } else {
+                console.log('[Admin] Ajout d\'un nouveau produit...');
                 await this.productService.addProduct(productData);
                 this.message = 'Produit ajouté avec succès !';
+                this.isError = false;
             }
             this.resetForm();
-        } catch (error) {
-            console.error('Operation failed', error);
-            this.message = 'Erreur lors de l\'enregistrement.';
+            this.cdr.detectChanges();
+        } catch (error: any) {
+            console.error('[Admin] ÉCHEC de l\'opération :', error);
+            this.message = `Erreur : ${error.message || 'Problème de connexion à Firestore'}`;
+            this.isError = true;
         } finally {
             this.isUploading = false;
+            this.cdr.detectChanges();
         }
     }
 

@@ -20,7 +20,13 @@
                     <div class="item-details" [routerLink]="['/product', item.product.id]">
                         <h3 class="h4">{{ item.product.type }}</h3>
                         <p class="brand">{{ item.product.brand }}</p>
-                        <p class="price">{{ item.product.price }} {{ item.product.price.includes('€') ? '' : '€' }}</p>
+                        <p class="price">
+                            @if (item.product.price) {
+                            {{ item.product.price }} {{ item.product.price.includes('€') ? '' : '€' }}
+                            } @else {
+                            -- €
+                            }
+                        </p>
                     </div>
                     <div class="item-quantity">
                         <div class="quantity-controls">

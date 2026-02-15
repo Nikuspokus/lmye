@@ -46,7 +46,8 @@ export class CartComponent implements OnInit {
 
     calculateTotal() {
         this.total = this.cartItems.reduce((acc, item) => {
-            const price = parseFloat(item.product.price.replace('€', '').trim());
+            const priceStr = item.product.price || '0';
+            const price = parseFloat(priceStr.replace('€', '').trim()) || 0;
             return acc + (price * item.quantity);
         }, 0);
     }
