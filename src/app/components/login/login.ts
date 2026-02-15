@@ -32,18 +32,8 @@ export class LoginComponent {
   router = inject(Router);
 
   constructor() {
-    const auth = inject(Auth);
-
-    // Gérer le résultat de la redirection (plus robuste pour Firebase)
-    getRedirectResult(auth).then((result) => {
-      if (result?.user) {
-        this.router.navigate(['/admin-lmye']);
-      }
-    }).catch((error) => {
-      console.error('Erreur retour redirect', error);
-    });
-
-    // Écouter l'état au cas où (persistance auto)
+    // Rediriger automatiquement dès que l'utilisateur est détecté
+    // Cela gère aussi bien le retour de redirect que le login local
     this.authService.user$.subscribe(user => {
       if (user) {
         this.router.navigate(['/admin-lmye']);

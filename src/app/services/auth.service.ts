@@ -1,17 +1,34 @@
 import { Injectable, inject } from '@angular/core';
-import { Auth, authState, signInWithRedirect, GoogleAuthProvider, signOut, User } from '@angular/fire/auth';
-import { Observable, of } from 'rxjs';
-import { traceUntilFirst } from '@angular/fire/performance';
-import { map } from 'rxjs/operators';
+import { Auth, authState, signInWithRedirect, getRedirectResult, GoogleAuthProvider, signOut, User } from '@angular/fire/auth';
+import { Observable, BehaviorSubject, from } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root',
 })
 export class AuthService {
     private auth: Auth = inject(Auth);
-    user$: Observable<User | null> = authState(this.auth);
 
-    constructor() { }
+    // Un Subject pour suivre si l'initialisation (dont le redirect) est terminée
+    private isInitializedContent = new BehaviorSubject<boolean>(false);
+    isInitialized$ = this.isInitializedContent.asObservable();
+
+    user$: Observable<User | null> = authState(this.auth).pipe(
+        shareReplay(1)
+    );
+
+    constructor() {
+        // Gérer le résultat du redirect dès l'init du service
+        getRedirectResult(this.auth).then((result) => {
+            if (result) {
+                console.log('Redirect result processed successfully');
+            }
+            this.isInitializedContent.next(true);
+        }).catch((error) => {
+            console.error('Error processing redirect result', error);
+            this.isInitializedContent.next(true);
+        });
+    }
 
     async loginWithGoogle() {
         const provider = new GoogleAuthProvider();
