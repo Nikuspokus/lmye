@@ -2,7 +2,7 @@
 @if (products.length > 0) {
 <section id="gallery" class="section gallery-section">
     <div class="container">
-        <h2 class="h2 text-center">Nos Créations</h2>
+        <h2 class="h2 text-center">Créations</h2>
         <p class="text-lead text-center">Découvrez l'ensemble de notre savoir-faire artisanal.</p>
 
         <div class="filters text-center mb-4">
@@ -10,7 +10,7 @@
                 (click)="filterProducts('Tous')">Tous</button>
             @for (cat of categories$ | async; track cat.id) {
             <button class="filter-btn" [class.active]="currentFilter === cat.name" (click)="filterProducts(cat.name)">{{
-                cat.name }}s</button>
+                cat.name }}</button>
             }
         </div>
 
