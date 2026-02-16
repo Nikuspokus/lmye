@@ -71,7 +71,9 @@
                 text-transform: uppercase;
                 color: white;
                 border-radius: 4px;
-                background-color: gray;
+                background-color: #E2B04E; // Premium Gold instead of Gray
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+                text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
                 z-index: 10;
 
                 &.accent-red {
@@ -89,45 +91,64 @@
         }
 
         .product-info {
-            padding: 1rem;
-            text-align: center;
+            padding: 0.6rem 0.8rem; // Tighter padding
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 0.1rem;
 
-            .info-top {
-                display: flex;
-                justify-content: space-between;
+            @media (min-width: 768px) {
+                height: 120px; // Increased from 105px
+                text-align: center;
                 align-items: center;
-                margin-bottom: 0.5rem;
+            }
 
-                .category-badge {
-                    font-size: 0.65rem;
-                    color: white;
-                    padding: 2px 8px;
-                    border-radius: 12px;
-                    text-transform: uppercase;
-                    font-weight: 700;
-                    letter-spacing: 0.5px;
-                    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-                }
+            .category-badge {
+                font-size: 0.55rem;
+                color: white;
+                padding: 1px 6px;
+                border-radius: 10px;
+                text-transform: uppercase;
+                font-weight: 700;
+                letter-spacing: 0.5px;
+                width: fit-content;
+                margin-bottom: 0.6rem; // Increased from 0.4rem
             }
 
             .brand {
-                display: block;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
                 color: var(--color-text-secondary);
-                font-size: 0.75rem;
+                font-size: 0.65rem;
                 text-transform: uppercase;
-                letter-spacing: 1px;
+                letter-spacing: 0.5px;
+                width: 100%;
+                margin-bottom: 0.4rem; // Increased from 0.1rem for better air
+                line-height: 1.2;
             }
 
             .product-name {
-                font-size: 1rem;
+                font-size: 0.95rem;
                 font-weight: 600;
-                margin-bottom: 0.4rem;
+                margin-bottom: 0;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                height: 2.5em;
+                line-height: 1.25;
+                color: var(--color-text-primary);
             }
 
             .price {
-                font-size: 1.1rem;
+                font-size: 1rem;
                 font-weight: 700;
-                color: var(--color-text-primary);
+                color: var(--color-accent-purple);
+                margin-top: auto;
             }
         }
     }

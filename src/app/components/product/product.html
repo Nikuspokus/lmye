@@ -87,6 +87,10 @@
                     <img [src]="item.image" [alt]="item.type">
                 </div>
                 <div class="info">
+                    <div class="info-top">
+                        <small class="brand">{{ item.brand }}</small>
+                        <span class="category-badge">{{ item.category }}</span>
+                    </div>
                     <span class="type">{{ item.type }}</span>
                     @if (item.price) {
                     <span class="price">{{ item.price }} {{ item.price.includes('€') ? '' : '€' }}</span>

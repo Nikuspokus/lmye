@@ -24,16 +24,14 @@
                     <img [src]="product.image" [alt]="product.type">
                 </div>
                 <div class="product-info">
-                    <div class="info-top">
-                        <small class="brand">{{ product.brand }}</small>
-                        @if (categories$ | async; as cats) {
-                        @let color = getCategoryColor(product.category, cats);
-                        <span class="category-badge" [style.background-color]="color"
-                            [style.color]="productService.getContrastColor(color)">
-                            {{ product.category }}
-                        </span>
-                        }
-                    </div>
+                    @if (categories$ | async; as cats) {
+                    @let color = getCategoryColor(product.category, cats);
+                    <span class="category-badge" [style.background-color]="color"
+                        [style.color]="productService.getContrastColor(color)">
+                        {{ product.category }}
+                    </span>
+                    }
+                    <small class="brand">{{ product.brand }}</small>
                     <h3 class="product-name">{{ product.type }}</h3>
                     @if (product.price) {
                     <div class="price">{{ product.price }} {{ product.price.includes('€') ? '' : '€' }}</div>
