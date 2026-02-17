@@ -1,13 +1,12 @@
 <section id="social" class="section social-section">
     <div class="container container-social">
         <div class="header-section text-center">
-            <h2 class="h2">Suivez-nous sur Facebook</h2>
-            <p class="text-lead">Découvrez les coulisses de l’atelier et nos dernières créations en direct.</p>
+            <h2 class="h2">Suivez-moi sur Facebook</h2>
+            <p class="text-lead">Découvrez les coulisses de l’atelier et les dernières créations en direct.</p>
         </div>
 
         <div class="social-grid">
-            <a *ngFor="let post of posts" [href]="'https://www.facebook.com/profile.php?id=61560562014105'"
-                target="_blank" class="social-card">
+            <a *ngFor="let post of posts" [href]="environment.siteGlobals.facebook" target="_blank" class="social-card">
                 <div class="card-header">
                     <img src="assets/images/493059193_122172773120352067_3252055687442239257_n.jpg" class="profile-img"
                         alt="La Marque y Est">
@@ -38,7 +37,7 @@
         </div>
 
         <div class="social-cta text-center">
-            <a href="https://www.facebook.com/profile.php?id=61560562014105" target="_blank" class="btn btn-facebook">
+            <a [href]="environment.siteGlobals.facebook" target="_blank" class="btn btn-facebook">
                 Visiter notre Page Officielle
             </a>
         </div>

@@ -1,8 +1,8 @@
 <section class="contact-section">
     <div class="container">
         <div class="contact-header">
-            <h1 class="h1">Contactez-nous</h1>
-            <p class="text-lead">Une question, un projet ou une commande ? N'hésitez pas à nous écrire.</p>
+            <h1 class="h1">Contactez-moi</h1>
+            <p class="text-lead">Une question, un projet ou une commande ? N'hésitez pas à m'écrire.</p>
         </div>
 
         <div class="contact-grid">
@@ -18,7 +18,7 @@
                     </div>
                     <div>
                         <h3 class="h3">Email</h3>
-                        <p>la.marque.y.est@gmail.com</p>
+                        <p>{{ environment.siteGlobals.email }}</p>
                     </div>
                 </div>
                 <div class="info-card">
@@ -31,7 +31,7 @@
                     </div>
                     <div>
                         <h3 class="h3">Localisation</h3>
-                        <p>Hauts-de-France</p>
+                        <p>{{ environment.siteGlobals.location }}</p>
                     </div>
                 </div>
             </div>
@@ -42,8 +42,8 @@
                   on the very first submission. You MUST click the link in that email 
                   to activate the form. Captcha is ENABLED by default.
                 -->
-                <form action="https://formsubmit.co/la.marque.y.est@gmail.com" method="POST" class="contact-form"
-                    ngNoForm>
+                <form [action]="'https://formsubmit.co/' + environment.siteGlobals.email" method="POST"
+                    class="contact-form" ngNoForm>
                     <input type="hidden" name="_template" value="box">
                     <input type="hidden" name="_subject" value="Nouveau message - La Marque y Est">
                     <input type="hidden" name="_autoresponse"

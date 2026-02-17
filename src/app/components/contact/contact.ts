@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 @Component({
     selector: 'app-contact',
@@ -11,6 +12,7 @@ import { ActivatedRoute } from '@angular/router';
     styleUrls: ['./contact.scss']
 })
 export class ContactComponent implements OnInit {
+    environment = environment;
     private route = inject(ActivatedRoute);
 
     formData = {
