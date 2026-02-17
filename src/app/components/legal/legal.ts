@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 @Component({
     selector: 'app-legal',
@@ -9,4 +10,6 @@ import { RouterModule } from '@angular/router';
     templateUrl: './legal.html',
     styleUrls: ['./legal.scss']
 })
-export class LegalComponent { }
+export class LegalComponent {
+    environment = environment;
+}
