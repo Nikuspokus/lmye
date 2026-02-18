@@ -37,6 +37,11 @@
             letter-spacing: 2px; // Match hero spacing
             color: var(--color-text-primary);
             text-transform: uppercase;
+            white-space: nowrap;
+
+            @media (max-width: 480px) {
+                font-size: 1rem;
+            }
         }
     }
 
@@ -60,7 +65,7 @@
             }
         }
 
-        .mobile-contact-btn {
+        .mobile-contact {
             display: none;
         }
     }
@@ -107,6 +112,10 @@
     @media (max-width: 768px) {
         .burger-menu {
             display: flex;
+            // Removed fixed position here to keep it in flow when closed
+            z-index: 1001;
+
+            // &.open removed as fixed position is no longer needed
         }
 
         .nav {
@@ -136,24 +145,72 @@
 
                 li a {
                     font-size: 1.1rem;
+
+                    &.mobile-cart-link {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                    }
+
+                    .mobile-cart-badge {
+                        background-color: var(--color-accent-purple);
+                        color: white;
+                        font-size: 0.8rem;
+                        font-weight: bold;
+                        // padding: 2px 8px; // Removed padding that caused pill shape
+                        padding: 0;
+                        border-radius: 50%; // Make it a circle
+                        min-width: 20px;
+                        height: 20px; // Ensure height equals width
+                        display: flex; // Center content
+                        justify-content: center;
+                        align-items: center;
+                        line-height: 1; // Prevent line-height issues
+                    }
                 }
             }
 
-            .mobile-contact-btn {
-                display: block;
-                width: 100%;
-                padding: 1rem;
-                background-color: var(--color-accent-purple, #6c5ce7);
-                color: white;
-                text-align: center;
-                text-decoration: none;
-                border-radius: 8px;
-                font-weight: 600;
+            .mobile-contact {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
                 margin-top: auto;
-                transition: background-color 0.3s;
+                width: 100%;
 
-                &:hover {
-                    opacity: 0.9;
+                .contact-title {
+                    font-weight: 600;
+                    font-size: 1.1rem;
+                    color: var(--color-text-primary);
+                }
+
+                .social-icons {
+                    display: flex;
+                    justify-content: center;
+                    gap: 2rem;
+
+                    a {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        width: 48px;
+                        height: 48px;
+                        border-radius: 50%;
+                        background-color: #f5f5f5;
+                        color: var(--color-text-primary);
+                        transition: all 0.3s ease;
+
+                        &:hover {
+                            background-color: var(--color-accent-purple);
+                            color: white;
+                            transform: translateY(-2px);
+                        }
+
+                        svg {
+                            width: 24px;
+                            height: 24px;
+                        }
+                    }
                 }
             }
         }

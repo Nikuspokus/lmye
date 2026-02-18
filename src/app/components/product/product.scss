@@ -3,15 +3,31 @@
     background-color: white;
     min-height: 80vh;
 
+    @media (max-width: 768px) {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
     .back-link {
-        display: inline-block;
+        display: inline-flex; // Use flex for alignment
+        align-items: center;
+        gap: 0.5rem; // Space between icon and text
         margin-bottom: 2rem;
         color: var(--color-text-secondary);
         font-weight: 500;
+        text-decoration: none; // Remove default underline
+        transition: all 0.2s ease;
+
+        svg {
+            transition: transform 0.2s ease;
+        }
 
         &:hover {
-            color: var(--color-text-primary);
-            text-decoration: underline;
+            color: var(--color-accent-purple); // Use accent color on hover
+
+            svg {
+                transform: translateX(-4px); // Move arrow back on hover
+            }
         }
     }
 

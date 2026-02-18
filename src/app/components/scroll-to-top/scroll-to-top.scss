@@ -2,40 +2,53 @@
     position: fixed;
     bottom: 2rem;
     right: 2rem;
-    width: 3rem;
-    height: 3rem;
-    background-color: var(--color-accent-purple);
+    width: 3.5rem;
+    height: 3.5rem;
+    background: linear-gradient(135deg, var(--color-accent-purple), lighten(#6c5ce7, 10%)); // Gradient for depth
     color: white;
     border: none;
     border-radius: 50%;
-    font-size: 1.5rem;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4); // Colored shadow
     display: flex;
     justify-content: center;
     align-items: center;
     opacity: 0;
     visibility: hidden;
-    transform: translateY(20px);
-    transition: all 0.3s ease;
-    z-index: 999;
+    transform: translateY(20px) scale(0.8);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); // Bouncy transition
+    z-index: 99;
+
+    svg {
+        width: 24px;
+        height: 24px;
+        transition: transform 0.3s ease;
+    }
 
     &:hover {
-        background-color: var(--color-text-primary);
-        transform: translateY(-2px);
+        transform: translateY(-5px) scale(1.1);
+        box-shadow: 0 8px 25px rgba(108, 92, 231, 0.6); // Enhanced shadow on hover
+
+        svg {
+            transform: translateY(-3px); // Arrow moves up
+        }
     }
 
     &.visible {
         opacity: 1;
         visibility: visible;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
     }
 
     @media (max-width: 768px) {
         bottom: 1.5rem;
         right: 1.5rem;
-        width: 2.5rem;
-        height: 2.5rem;
-        font-size: 1.25rem;
+        width: 3rem;
+        height: 3rem;
+
+        svg {
+            width: 20px;
+            height: 20px;
+        }
     }
 }

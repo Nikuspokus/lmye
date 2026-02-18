@@ -11,19 +11,34 @@
                 <li><a [routerLink]="['/']" fragment="concept" (click)="closeMenu()">Concept</a></li>
                 <li><a [routerLink]="['/']" fragment="nouveautes" (click)="closeMenu()">Nouveautés</a></li>
                 <li><a [routerLink]="['/']" fragment="gallery" (click)="closeMenu()">Créations</a></li>
-                <li><a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">Contact</a></li>
+                <li>
+                    <a routerLink="/cart" (click)="closeMenu()" class="mobile-cart-link">
+                        Mon Panier
+                        <span class="mobile-cart-badge" *ngIf="(cartCount$ | async) as count">{{ count }}</span>
+                    </a>
+                </li>
             </ul>
-            <a href="mailto:la.marque.y.est@gmail.com" class="mobile-contact-btn" (click)="closeMenu()">
-                Contacter par mail
-            </a>
+            <div class="mobile-contact">
+                <span class="contact-title">Contactez-moi</span>
+                <div class="social-icons">
+                    <a href="https://m.me/61560562014105" target="_blank" rel="noopener noreferrer"
+                        aria-label="Messenger">
+                        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                            <path
+                                d="M12 2C6.48 2 2 6.03 2 11.25c0 2.87 1.36 5.46 3.51 7.15V22l3.35-1.84c.99.27 2.05.42 3.14.42 5.52 0 10-4.03 10-9.25S17.52 2 12 2zm1.14 11.8l-2.87-3.06-5.61 3.06 6.17-6.55 2.84 3.06 5.64-3.06-6.17 6.55z" />
+                        </svg>
+                    </a>
+                    <a routerLink="/contact" (click)="closeMenu()" aria-label="Contact">
+                        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                            <path d="M22 6l-10 7L2 6"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
         </nav>
         <div class="header-actions">
-            <button class="burger-menu" (click)="toggleMenu()" [class.open]="isMenuOpen" aria-label="Menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-
             <div class="cart-icon" routerLink="/cart">
                 <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round" class="basket-svg">
@@ -33,6 +48,12 @@
                 </svg>
                 <span class="badge" *ngIf="(cartCount$ | async) as count">{{ count }}</span>
             </div>
+
+            <button class="burger-menu" (click)="toggleMenu()" [class.open]="isMenuOpen" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
         <div class="menu-overlay" *ngIf="isMenuOpen" (click)="closeMenu()"></div>
     </div>
