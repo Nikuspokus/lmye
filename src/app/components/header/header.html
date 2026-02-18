@@ -13,6 +13,9 @@
                 <li><a [routerLink]="['/']" fragment="gallery" (click)="closeMenu()">Créations</a></li>
                 <li><a routerLink="/contact" routerLinkActive="active" (click)="closeMenu()">Contact</a></li>
             </ul>
+            <a href="mailto:la.marque.y.est@gmail.com" class="mobile-contact-btn" (click)="closeMenu()">
+                Contacter par mail
+            </a>
         </nav>
         <div class="header-actions">
             <button class="burger-menu" (click)="toggleMenu()" [class.open]="isMenuOpen" aria-label="Menu">
@@ -31,5 +34,6 @@
                 <span class="badge" *ngIf="(cartCount$ | async) as count">{{ count }}</span>
             </div>
         </div>
+        <div class="menu-overlay" *ngIf="isMenuOpen" (click)="closeMenu()"></div>
     </div>
 </header>

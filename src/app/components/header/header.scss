@@ -44,6 +44,9 @@
         ul {
             display: flex;
             gap: 2rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
 
             li a {
                 font-weight: 500;
@@ -55,6 +58,10 @@
                     color: var(--color-accent-purple);
                 }
             }
+        }
+
+        .mobile-contact-btn {
+            display: none;
         }
     }
 
@@ -77,22 +84,21 @@
             border-radius: 10px;
             transition: all 0.3s linear;
             position: relative;
-            transform-origin: 1px;
+            transform-origin: center;
         }
 
         &.open {
             span {
                 &:first-child {
-                    transform: rotate(45deg);
+                    transform: translateY(8px) rotate(45deg);
                 }
 
                 &:nth-child(2) {
                     opacity: 0;
-                    transform: translateX(20px);
                 }
 
                 &:last-child {
-                    transform: rotate(-45deg);
+                    transform: translateY(-8px) rotate(-45deg);
                 }
             }
         }
@@ -109,6 +115,9 @@
             right: 0;
             height: 100vh;
             width: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             background-color: white;
             padding: 80px 2rem 2rem;
             box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
@@ -123,10 +132,28 @@
             ul {
                 flex-direction: column;
                 gap: 2rem;
-                align-items: flex-start;
+                align-items: center;
 
                 li a {
                     font-size: 1.1rem;
+                }
+            }
+
+            .mobile-contact-btn {
+                display: block;
+                width: 100%;
+                padding: 1rem;
+                background-color: var(--color-accent-purple, #6c5ce7);
+                color: white;
+                text-align: center;
+                text-decoration: none;
+                border-radius: 8px;
+                font-weight: 600;
+                margin-top: auto;
+                transition: background-color 0.3s;
+
+                &:hover {
+                    opacity: 0.9;
                 }
             }
         }
@@ -170,5 +197,16 @@
             font-weight: bold;
             padding: 0 4px;
         }
+    }
+
+    .menu-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        backdrop-filter: blur(2px);
     }
 }

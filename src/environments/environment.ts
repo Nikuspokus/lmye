@@ -1,7 +1,7 @@
 export const environment = {
     production: false,
     firebase: {
-        apiKey: "AIzaSyAUtZPpaNk6svUlPDktP7KPN8ODnx-jgrg",
+        apiKey: "AIzaSyBt_AxiFoez77vh_B2tSIj1YEtV-D5mRvw",
         authDomain: "la-marque-y-est.firebaseapp.com",
         projectId: "la-marque-y-est",
         storageBucket: "la-marque-y-est.firebasestorage.app",
