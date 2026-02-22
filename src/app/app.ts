@@ -28,7 +28,9 @@ export class AppComponent implements OnInit {
       if (e.anchor) {
         // Delay slightly so layout can compute, then scroll to the element considering header offset
         setTimeout(() => {
-          this.viewportScroller.setOffset([0, 92]);
+          // 48px is approx 3rem
+          const offset = window.innerWidth > 1024 ? 92 : 48;
+          this.viewportScroller.setOffset([0, offset]);
           this.viewportScroller.scrollToAnchor(e.anchor!);
         }, 100);
       } else if (e.position) {

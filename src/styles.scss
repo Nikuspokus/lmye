@@ -32,11 +32,19 @@ body {
 
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: 92px;
+    scroll-padding-top: 3rem;
+
+    @media (min-width: 1025px) {
+        scroll-padding-top: 92px;
+    }
 }
 
 [id] {
-    scroll-margin-top: 92px;
+    scroll-margin-top: 3rem;
+
+    @media (min-width: 1025px) {
+        scroll-margin-top: 92px;
+    }
 }
 
 a {

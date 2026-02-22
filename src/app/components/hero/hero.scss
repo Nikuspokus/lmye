@@ -9,8 +9,9 @@
     align-items: center;
     justify-content: center;
     color: white;
-    margin-top: -80px; // Offset for fixed header
-    padding-top: 80px;
+    // We remove the old static margin/padding hacks. The 100vh alone makes it perfectly full-screen.
+    margin-top: 0;
+    padding-top: 0;
 
     .hero-overlay {
         position: absolute;
