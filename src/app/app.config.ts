@@ -1,5 +1,5 @@
 import { ApplicationConfig, provideZonelessChangeDetection } from '@angular/core';
-import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
+import { provideRouter, withComponentInputBinding, withInMemoryScrolling, ROUTER_CONFIGURATION } from '@angular/router';
 import { routes } from './app.routes';
 
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
@@ -15,6 +15,10 @@ export const appConfig: ApplicationConfig = {
       scrollPositionRestoration: 'top',
       anchorScrolling: 'enabled'
     })),
+    {
+      provide: ROUTER_CONFIGURATION,
+      useValue: { scrollOffset: [0, 92] }
+    },
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),

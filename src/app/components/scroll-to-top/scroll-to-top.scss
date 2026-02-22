@@ -4,7 +4,7 @@
     right: 2rem;
     width: 3.5rem;
     height: 3.5rem;
-    background: linear-gradient(135deg, var(--color-accent-purple), lighten(#6c5ce7, 10%)); // Gradient for depth
+    background: linear-gradient(135deg, var(--color-accent-purple), color-mix(in srgb, #6c5ce7, white 15%)); // Gradient for depth
     color: white;
     border: none;
     border-radius: 50%;
