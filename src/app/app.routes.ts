@@ -7,6 +7,7 @@ export const routes: Routes = [
     { path: 'cart', loadComponent: () => import('./components/cart/cart').then(m => m.CartComponent) },
     { path: 'contact', loadComponent: () => import('./components/contact/contact').then(m => m.ContactComponent) },
     { path: 'mentions-legales', loadComponent: () => import('./components/legal/legal').then(m => m.LegalComponent) },
+    { path: 'cgv', loadComponent: () => import('./components/cgv/cgv').then(m => m.CgvComponent) },
     { path: 'login', loadComponent: () => import('./components/login/login').then(m => m.LoginComponent) },
     {
         path: 'admin-lmye',

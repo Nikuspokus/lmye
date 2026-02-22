@@ -82,7 +82,20 @@
                             placeholder="Comment puis-je vous aider ?"></textarea>
                     </div>
 
-                    <button type="submit" class="btn btn-primary btn-full">
+                    <div class="form-group"
+                        style="flex-direction: row; align-items: flex-start; gap: 0.8rem; margin-bottom: 2rem;">
+                        <input type="checkbox" id="cgv-consent" name="cgv_consent" required #cgvCheckbox (change)="true"
+                            style="margin-top: 4px; width: auto; cursor: pointer;">
+                        <label for="cgv-consent"
+                            style="font-size: 0.85rem; font-weight: 500; cursor: pointer; color: #555; line-height: 1.4; margin-bottom: 0;">
+                            J'accepte les CGV et je reconnais que les produits personnalisés ne sont pas soumis au droit
+                            de rétractation.
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-full"
+                        [disabled]="!cgvCheckbox.checked || !formData.name || !formData.email || !formData.message"
+                        [style.opacity]="(cgvCheckbox.checked && formData.name && formData.email && formData.message) ? 1 : 0.5">
                         Envoyer le message
                         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
                             stroke-width="2" style="display: inline-block; vertical-align: middle; margin-left: 8px;">

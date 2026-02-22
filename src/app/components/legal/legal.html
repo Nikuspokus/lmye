@@ -5,33 +5,53 @@
         <div class="legal-content">
             <section>
                 <h3>1. Éditeur du site</h3>
-                <p><strong>Nom commercial :</strong> La Marque y Est</p>
-                <p><strong>Responsable de la publication :</strong> Caroline Marquillier</p>
-                <p><strong>Adresse :</strong> Hauts-de-France, France</p>
-                <p><strong>Email :</strong> {{ environment.siteGlobals.email }}</p>
-                <p><strong>SIRET :</strong> 840881619000026</p>
-                <p><strong>Code NAF :</strong> 1419Z</p>
-                <p><strong>Date d'immatriculation :</strong> 29/07/2024</p>
+                <p>Le site {{ environment.siteGlobals.legal.siteDomain }} accessible à l'adresse {{
+                    environment.siteGlobals.legal.siteUrl }}, est édité par :</p>
+                <p><strong>Nom et Prénom :</strong> {{ environment.siteGlobals.legal.editorName }}</p>
+                <p><strong>Forme juridique :</strong> {{ environment.siteGlobals.legal.editorLegalStatus }}</p>
+                <p><strong>Siège social :</strong> {{ environment.siteGlobals.legal.editorAddress }}</p>
+                <p><strong>SIRET :</strong> {{ environment.siteGlobals.legal.editorSiret }}</p>
+                <p><strong>Adresse mail :</strong> <a
+                        href="mailto:{{ environment.siteGlobals.legal.editorContactEmail }}">{{
+                        environment.siteGlobals.legal.editorContactEmail }}</a></p>
             </section>
 
             <section>
-                <h3>2. Hébergement</h3>
-                <p>Ce site est hébergé par Netlify, Inc., 44 Montgomery Street, Suite 300, San Francisco, California
-                    94104, USA.</p>
+                <h3>2. Hébergeur du site</h3>
+                <p>Le site est hébergé par la société :</p>
+                <p><strong>Nom de l'hébergeur :</strong> {{ environment.siteGlobals.legal.hostName }}</p>
+                <p><strong>Siège social :</strong> {{ environment.siteGlobals.legal.hostAddress }}
+                </p>
             </section>
 
             <section>
                 <h3>3. Propriété intellectuelle</h3>
-                <p>L'ensemble de ce site relève de la législation française et internationale sur le droit d'auteur et
-                    la propriété intellectuelle. Tous les droits de reproduction sont réservés, y compris pour les
-                    documents téléchargeables et les représentations iconographiques et photographiques.</p>
+                <p>L'ensemble du contenu de ce site (textes, photographies des créations, logos, charte graphique) est
+                    la propriété exclusive de {{ environment.siteGlobals.legal.siteName }}. Toute reproduction,
+                    distribution
+                    ou modification, même
+                    partielle, est strictement interdite sans l'autorisation écrite préalable de l'éditeur, conformément
+                    aux dispositions du Code de la propriété intellectuelle.</p>
             </section>
 
             <section>
-                <h3>4. Données personnelles</h3>
-                <p>Les informations recueillies sur ce site sont enregistrées dans un fichier informatisé pour la
-                    gestion des commandes. Elles sont conservées pendant la durée nécessaire à la gestion de la relation
+                <h3>4. Données personnelles (RGPD)</h3>
+                <p>Dans le cadre de votre demande de projet (ajout au panier), le site collecte des données personnelles
+                    (nom, email, etc.) nécessaires à la gestion de notre échange.</p>
+                <p><strong>Finalité :</strong> Ces données sont utilisées exclusivement pour répondre à votre demande de
+                    personnalisation et assurer le suivi de votre commande.</p>
+                <p><strong>Droit d'accès :</strong> Conformément au Règlement Général sur la Protection des Données
+                    (RGPD), vous disposez d'un droit d'accès, de rectification et de suppression de vos données. Pour
+                    l'exercer, contactez-moi par e-mail à : <a href="mailto:{{ environment.siteGlobals.email }}">{{
+                        environment.siteGlobals.email }}</a></p>
+                <p><strong>Conservation :</strong> Les données sont conservées pendant la durée nécessaire à la relation
                     commerciale.</p>
+            </section>
+
+            <section>
+                <h3>5. Cookies</h3>
+                <p>Le site peut être amené à utiliser des cookies pour améliorer l'expérience de navigation et réaliser
+                    des statistiques de visite. Vous pouvez configurer votre navigateur pour refuser ces cookies.</p>
             </section>
         </div>
     </div>

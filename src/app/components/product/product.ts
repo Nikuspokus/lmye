@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { Observable, of, combineLatest } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Product, Category, ProductService } from '../../services/product.service';
 import { CartService } from '../../services/cart.service';
 
@@ -17,17 +17,17 @@ export class ProductComponent implements OnInit {
   product$: Observable<Product | undefined> = of(undefined);
   suggestions$: Observable<Product[]> = of([]);
   categories$: Observable<Category[]> = of([]);
-  quantity: number = 1;
+  quantity = 1;
   selectedImage: string | null = null; // Added property
   currentProduct: Product | undefined; // To hold resolved product for cart
 
   private cartService = inject(CartService);
 
-  constructor(
-    private route: ActivatedRoute,
-    public productService: ProductService,
-    private router: Router
-  ) { }
+  private route = inject(ActivatedRoute);
+  public productService = inject(ProductService);
+  private router = inject(Router);
+
+
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {

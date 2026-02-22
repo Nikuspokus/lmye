@@ -6,7 +6,8 @@
         </div>
 
         <div class="social-grid">
-            <a *ngFor="let post of posts" [href]="environment.siteGlobals.facebook" target="_blank" class="social-card">
+            @for (post of posts; track post) {
+            <a [href]="environment.siteGlobals.facebook" target="_blank" class="social-card">
                 <div class="card-header">
                     <img src="assets/images/493059193_122172773120352067_3252055687442239257_n.jpg" class="profile-img"
                         alt="La Marque y Est">
@@ -22,18 +23,23 @@
                     </span>
                 </div>
                 <div class="card-body">
-                    <p class="post-text" *ngIf="post.text">{{ post.text }}</p>
+                    @if (post.text) {
+                    <p class="post-text">{{ post.text }}</p>
+                    }
                     <div class="post-image-container">
                         <img [src]="post.image" class="post-image" [alt]="post.name">
                     </div>
                 </div>
-                <div class="card-footer" *ngIf="post.likes > 0 || post.comments > 0">
+                @if (post.likes > 0 || post.comments > 0) {
+                <div class="card-footer">
                     <div class="interactions">
                         <span>{{ post.reactionType }} {{ post.likes }}</span>
                         <span>💬 {{ post.comments }}</span>
                     </div>
                 </div>
+                }
             </a>
+            }
         </div>
 
         <div class="social-cta text-center">

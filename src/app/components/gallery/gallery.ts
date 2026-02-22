@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Observable, of, combineLatest } from 'rxjs';
@@ -16,9 +16,9 @@ export class GalleryComponent implements OnInit {
   products$: Observable<Product[]> = of([]);
   filteredProducts$: Observable<Product[]> = of([]);
   categories$: Observable<Category[]> = of([]);
-  currentFilter: string = 'Tous';
+  currentFilter = 'Tous';
 
-  constructor(public productService: ProductService) { }
+  public productService = inject(ProductService);
 
   ngOnInit(): void {
     this.products$ = this.productService.getProducts().pipe(

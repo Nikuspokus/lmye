@@ -2,7 +2,6 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { Auth, getRedirectResult } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-login',
@@ -12,16 +11,20 @@ import { Auth, getRedirectResult } from '@angular/fire/auth';
     <div class="login-container">
       <h2>Connexion Administration</h2>
       
-      <div *ngIf="!(authService.isInitialized$ | async)" class="status-box">
-        Vérification de la session...
-      </div>
+      @if ((authService.isInitialized$ | async) === false) {
+        <div class="status-box">
+          Vérification de la session...
+        </div>
+      }
 
-      <ng-container *ngIf="authService.isInitialized$ | async">
+      @if (authService.isInitialized$ | async) {
         <button (click)="login()" class="btn btn-primary" [disabled]="isLoading">
            {{ isLoading ? 'Connexion en cours...' : 'Se connecter avec Google' }}
         </button>
-        <p *ngIf="error" class="error-msg">{{ error }}</p>
-      </ng-container>
+        @if (error) {
+          <p class="error-msg">{{ error }}</p>
+        }
+      }
     </div>
   `,
   styles: [`
@@ -58,7 +61,7 @@ export class LoginComponent {
     try {
       await this.authService.loginWithGoogle();
       // Le AuthService gère la navigation après succès
-    } catch (error: any) {
+    } catch (error: unknown) {
       this.isLoading = false;
       this.error = "Échec de la connexion. Veuillez réessayer.";
       console.error('Login error:', error);

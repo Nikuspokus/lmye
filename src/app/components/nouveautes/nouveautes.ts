@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { Observable, of, combineLatest } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Product, Category, ProductService } from '../../services/product.service';
 
@@ -16,7 +16,7 @@ export class NouveautesComponent implements OnInit {
     latestProducts$: Observable<Product[]> = of([]);
     categories$: Observable<Category[]> = of([]);
 
-    constructor(public productService: ProductService) { }
+    public productService = inject(ProductService);
 
     ngOnInit(): void {
         this.latestProducts$ = this.productService.getProducts().pipe(

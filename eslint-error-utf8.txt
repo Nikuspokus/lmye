@@ -1,0 +1,16 @@
+
+Oops! Something went wrong! :(
+
+ESLint: 10.0.1
+
+TypeError: Cannot read properties of null (reading '__addVariables')
+    at ScopeManager.addGlobals (C:\Users\nicolas.marquillier\Documents\projets-nico\la-marque-y-est\node_modules\eslint-scope\dist\eslint-scope.cjs:1387:20)
+    at addDeclaredGlobals (C:\Users\nicolas.marquillier\Documents\projets-nico\la-marque-y-est\node_modules\eslint\lib\languages\js\source-code\source-code.js:221:15)
+    at SourceCode.finalize (C:\Users\nicolas.marquillier\Documents\projets-nico\la-marque-y-est\node_modules\eslint\lib\languages\js\source-code\source-code.js:1090:3)
+    at #flatVerifyWithoutProcessors (C:\Users\nicolas.marquillier\Documents\projets-nico\la-marque-y-est\node_modules\eslint\lib\linter\linter.js:1245:24)
+    at Linter._verifyWithFlatConfigArrayAndWithoutProcessors (C:\Users\nicolas.marquillier\Documents\projets-nico\la-marque-y-est\node_modules\eslint\lib\linter\linter.js:1333:43)
+    at Linter._verifyWithFlatConfigArray (C:\Users\nicolas.marquillier\Documents\projets-nico\la-marque-y-est\node_modules\eslint\lib\linter\linter.js:1400:15)
+    at C:\Users\nicolas.marquillier\Documents\projets-nico\la-marque-y-est\node_modules\eslint\lib\linter\linter.js:942:17
+    at Array.map (<anonymous>)
+    at Linter._verifyWithFlatConfigArrayAndProcessor (C:\Users\nicolas.marquillier\Documents\projets-nico\la-marque-y-est\node_modules\eslint\lib\linter\linter.js:915:30)
+    at Linter._verifyWithFlatConfigArray (C:\Users\nicolas.marquillier\Documents\projets-nico\la-marque-y-est\node_modules\eslint\lib\linter\linter.js:1383:16)

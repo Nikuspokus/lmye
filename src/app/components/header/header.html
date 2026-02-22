@@ -11,12 +11,6 @@
                 <li><a [routerLink]="['/']" fragment="concept" (click)="closeMenu()">Concept</a></li>
                 <li><a [routerLink]="['/']" fragment="nouveautes" (click)="closeMenu()">Nouveautés</a></li>
                 <li><a [routerLink]="['/']" fragment="gallery" (click)="closeMenu()">Créations</a></li>
-                <li>
-                    <a routerLink="/cart" (click)="closeMenu()" class="mobile-cart-link">
-                        Mon Panier
-                        <span class="mobile-cart-badge" *ngIf="(cartCount$ | async) as count">{{ count }}</span>
-                    </a>
-                </li>
             </ul>
             <div class="mobile-contact">
                 <span class="contact-title">Contactez-moi</span>
@@ -46,7 +40,9 @@
                     <line x1="3" y1="6" x2="21" y2="6"></line>
                     <path d="M16 10a4 4 0 0 1-8 0"></path>
                 </svg>
-                <span class="badge" *ngIf="(cartCount$ | async) as count">{{ count }}</span>
+                @if ((cartCount$ | async); as count) {
+                <span class="badge">{{ count }}</span>
+                }
             </div>
 
             <button class="burger-menu" (click)="toggleMenu()" [class.open]="isMenuOpen" aria-label="Menu">
@@ -55,6 +51,8 @@
                 <span></span>
             </button>
         </div>
-        <div class="menu-overlay" *ngIf="isMenuOpen" (click)="closeMenu()"></div>
+        @if (isMenuOpen) {
+        <div class="menu-overlay" (click)="closeMenu()" (keydown.enter)="closeMenu()" tabindex="0"></div>
+        }
     </div>
 </header>

@@ -1,0 +1,28 @@
+.legal-page {
+    padding-top: 100px;
+    background-color: var(--color-bg-secondary);
+    min-height: 80vh;
+
+    .legal-content {
+        background: white;
+        padding: 3rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+
+        section {
+            margin-bottom: 2rem;
+
+            h3 {
+                font-size: 1.2rem;
+                margin-bottom: 1rem;
+                color: var(--color-text-primary);
+            }
+
+            p {
+                margin-bottom: 0.5rem;
+                color: var(--color-text-secondary);
+                line-height: 1.6;
+            }
+        }
+    }
+}

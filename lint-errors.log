@@ -1,0 +1,84 @@
+
+Linting "la-marque-y-est"...
+
+C:\Users\nicolas.marquillier\Documents\projets-nico\la-marque-y-est\src\app\components\admin\admin-dashboard.ts
+  447:31  error  Unexpected any. Specify a different type                                                @typescript-eslint/no-explicit-any
+  544:21  error  Unexpected any. Specify a different type                                                @typescript-eslint/no-explicit-any
+  622:21  error  Unexpected any. Specify a different type                                                @typescript-eslint/no-explicit-any
+  665:23  error  Unexpected any. Specify a different type                                                @typescript-eslint/no-explicit-any
+   25:13  error  click must be accompanied by either keyup, keydown or keypress event for accessibility  @angular-eslint/template/click-events-have-key-events
+   25:13  error  Elements with interaction handlers must be focusable                                    @angular-eslint/template/interactive-supports-focus
+   38:21  error  A label component must be associated with a form element                                @angular-eslint/template/label-has-associated-control
+   42:21  error  A label component must be associated with a form element                                @angular-eslint/template/label-has-associated-control
+   96:17  error  A label component must be associated with a form element                                @angular-eslint/template/label-has-associated-control
+  101:17  error  A label component must be associated with a form element                                @angular-eslint/template/label-has-associated-control
+  106:17  error  A label component must be associated with a form element                                @angular-eslint/template/label-has-associated-control
+  121:17  error  A label component must be associated with a form element                                @angular-eslint/template/label-has-associated-control
+  126:15  error  A label component must be associated with a form element                                @angular-eslint/template/label-has-associated-control
+  140:15  error  A label component must be associated with a form element                                @angular-eslint/template/label-has-associated-control
+
+C:\Users\nicolas.marquillier\Documents\projets-nico\la-marque-y-est\src\app\components\cart\cart.html
+  15:15  error  Use built-in control flow instead of directive ngIf     @angular-eslint/template/prefer-control-flow
+  17:39  error  Use built-in control flow instead of directive ngForOf  @angular-eslint/template/prefer-control-flow
+
+C:\Users\nicolas.marquillier\Documents\projets-nico\la-marque-y-est\src\app\components\gallery\gallery.ts
+  21:15  error  Prefer using the inject() function over constructor parameter injection. Use Angular's migration schematic to automatically refactor: ng generate @angular/core:inject  @angular-eslint/prefer-inject
+
+C:\Users\nicolas.marquillier\Documents\projets-nico\la-marque-y-est\src\app\components\header\header.html
+  17:58  error  Use built-in control flow instead of directive ngIf                                     @angular-eslint/template/prefer-control-flow
+  49:38  error  Use built-in control flow instead of directive ngIf                                     @angular-eslint/template/prefer-control-flow
+  58:9   error  click must be accompanied by either keyup, keydown or keypress event for accessibility  @angular-eslint/template/click-events-have-key-events
+  58:9   error  Elements with interaction handlers must be focusable                                    @angular-eslint/template/interactive-supports-focus
+  58:36  error  Use built-in control flow instead of directive ngIf                                     @angular-eslint/template/prefer-control-flow
+
+C:\Users\nicolas.marquillier\Documents\projets-nico\la-marque-y-est\src\app\components\login\login.ts
+   5:10  error  'Auth' is defined but never used                                                                                                                                                     @typescript-eslint/no-unused-vars
+   5:16  error  'getRedirectResult' is defined but never used                                                                                                                                        @typescript-eslint/no-unused-vars
+  61:21  error  Unexpected any. Specify a different type                                                                                                                                             @typescript-eslint/no-explicit-any
+  15:13  error  Use built-in control flow instead of directive ngIf                                                                                                                                  @angular-eslint/template/prefer-control-flow
+  15:19  error  Async pipe results should not be negated. Use `(observable | async) === false`, `(observable | async) === null`, or `(observable | async) === undefined` to check its value instead  @angular-eslint/template/no-negated-async
+  19:22  error  Use built-in control flow instead of directive ngIf                                                                                                                                  @angular-eslint/template/prefer-control-flow
+  23:13  error  Use built-in control flow instead of directive ngIf                                                                                                                                  @angular-eslint/template/prefer-control-flow
+
+C:\Users\nicolas.marquillier\Documents\projets-nico\la-marque-y-est\src\app\components\nouveautes\nouveautes.ts
+   4:26  error  'combineLatest' is defined but never used                                                                                                                               @typescript-eslint/no-unused-vars
+  19:17  error  Prefer using the inject() function over constructor parameter injection. Use Angular's migration schematic to automatically refactor: ng generate @angular/core:inject  @angular-eslint/prefer-inject
+
+C:\Users\nicolas.marquillier\Documents\projets-nico\la-marque-y-est\src\app\components\product\product.html
+  21:17  error  click must be accompanied by either keyup, keydown or keypress event for accessibility  @angular-eslint/template/click-events-have-key-events
+  21:17  error  Elements with interaction handlers must be focusable                                    @angular-eslint/template/interactive-supports-focus
+  58:21  error  A label component must be associated with a form element                                @angular-eslint/template/label-has-associated-control
+
+C:\Users\nicolas.marquillier\Documents\projets-nico\la-marque-y-est\src\app\components\product\product.ts
+   5:26  error  'combineLatest' is defined but never used                                                                                                                               @typescript-eslint/no-unused-vars
+  27:5   error  Prefer using the inject() function over constructor parameter injection. Use Angular's migration schematic to automatically refactor: ng generate @angular/core:inject  @angular-eslint/prefer-inject
+  28:5   error  Prefer using the inject() function over constructor parameter injection. Use Angular's migration schematic to automatically refactor: ng generate @angular/core:inject  @angular-eslint/prefer-inject
+  29:5   error  Prefer using the inject() function over constructor parameter injection. Use Angular's migration schematic to automatically refactor: ng generate @angular/core:inject  @angular-eslint/prefer-inject
+
+C:\Users\nicolas.marquillier\Documents\projets-nico\la-marque-y-est\src\app\components\scroll-to-top\scroll-to-top.ts
+  15:38  error  Prefer using the inject() function over constructor parameter injection. Use Angular's migration schematic to automatically refactor: ng generate @angular/core:inject  @angular-eslint/prefer-inject
+
+C:\Users\nicolas.marquillier\Documents\projets-nico\la-marque-y-est\src\app\components\social\social.html
+   9:33  error  Use built-in control flow instead of directive ngForOf  @angular-eslint/template/prefer-control-flow
+  25:43  error  Use built-in control flow instead of directive ngIf     @angular-eslint/template/prefer-control-flow
+  30:43  error  Use built-in control flow instead of directive ngIf     @angular-eslint/template/prefer-control-flow
+
+C:\Users\nicolas.marquillier\Documents\projets-nico\la-marque-y-est\src\app\guards\auth.guard.ts
+  4:21  error  'tap' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\nicolas.marquillier\Documents\projets-nico\la-marque-y-est\src\app\services\auth.service.ts
+  3:27  error  'Observable' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\nicolas.marquillier\Documents\projets-nico\la-marque-y-est\src\app\services\product.service.ts
+   33:9   error  Prefer using the inject() function over constructor parameter injection. Use Angular's migration schematic to automatically refactor: ng generate @angular/core:inject  @angular-eslint/prefer-inject
+   34:9   error  Prefer using the inject() function over constructor parameter injection. Use Angular's migration schematic to automatically refactor: ng generate @angular/core:inject  @angular-eslint/prefer-inject
+   53:52  error  Unexpected any. Specify a different type                                                                                                                                @typescript-eslint/no-explicit-any
+   95:30  error  Unexpected any. Specify a different type                                                                                                                                @typescript-eslint/no-explicit-any
+  133:49  error  Unexpected any. Specify a different type                                                                                                                                @typescript-eslint/no-explicit-any
+  140:25  error  Unexpected any. Specify a different type                                                                                                                                @typescript-eslint/no-explicit-any
+  237:32  error  Unexpected any. Specify a different type                                                                                                                                @typescript-eslint/no-explicit-any
+
+✖ 51 problems (51 errors, 0 warnings)
+
+[1m[31mLint errors found in the listed files.
+[39m[22m

@@ -12,9 +12,11 @@
         </div>
         }
 
-        <div *ngIf="cartItems.length > 0; else emptyCart" class="cart-container">
+        @if (cartItems.length > 0) {
+        <div class="cart-container">
             <div class="cart-items">
-                <div *ngFor="let item of cartItems" class="cart-item">
+                @for (item of cartItems; track item.product.id) {
+                <div class="cart-item">
                     <img [src]="item.product.image" [alt]="item.product.type" class="item-image"
                         [routerLink]="['/product', item.product.id]">
                     <div class="item-details" [routerLink]="['/product', item.product.id]">
@@ -48,6 +50,7 @@
                         </button>
                     </div>
                 </div>
+                }
             </div>
 
             <div class="cart-summary">
@@ -60,6 +63,19 @@
 
                     <div class="checkout-form-container">
                         <h4 class="h4 mb-3">Finaliser la commande</h4>
+
+                        <div class="checkout-notice mb-4">
+                            <strong>Imaginons votre futur accessoire ensemble...</strong>
+                            <p>
+                                Chaque création sortant de mon atelier est unique. En plaçant cet article dans votre
+                                panier, vous m'informez de votre intérêt pour ce modèle. Ce n'est pas un achat immédiat
+                                : <em>c'est le point de départ de notre échange !</em>
+                            </p>
+                            <p>
+                                Je vous recontacterai rapidement pour convenir avec vous des matériaux et finitions
+                                souhaitées afin de valider votre commande personnalisée.
+                            </p>
+                        </div>
                         <form action="https://formsubmit.co/la.marque.y.est@gmail.com" method="POST" id="checkout-form"
                             ngNoForm>
                             <input type="hidden" name="_template" value="box">
@@ -82,18 +98,42 @@
                                     [(ngModel)]="orderData.phone">
                             </div>
                             <div class="form-group mb-2">
-                                <textarea name="address" placeholder="Adresse complète de livraison" required
-                                    class="form-input" rows="2" [(ngModel)]="orderData.address"></textarea>
+                                <input type="text" name="street" placeholder="Numéro et rue / voie" required
+                                    class="form-input" [(ngModel)]="orderData.street">
+                            </div>
+                            <div class="form-group mb-2" style="display: flex; gap: 1rem;">
+                                <input type="text" name="zipCode" placeholder="Code Postal" required class="form-input"
+                                    style="flex: 1;" [(ngModel)]="orderData.zipCode">
+                                <input type="text" name="city" placeholder="Ville" required class="form-input"
+                                    style="flex: 2;" [(ngModel)]="orderData.city">
+                            </div>
+                            <div class="form-group mb-2">
+                                <input type="text" name="country" placeholder="Pays" required class="form-input"
+                                    [(ngModel)]="orderData.country">
                             </div>
                             <div class="form-group mb-3">
                                 <textarea name="message" placeholder="Un message ou une précision ? (Optionnel)"
                                     class="form-input" rows="2"></textarea>
                             </div>
 
+                            <div class="form-group"
+                                style="display: flex; align-items: flex-start; gap: 0.8rem; margin-bottom: 1.5rem;">
+                                <input type="checkbox" id="cgv-consent-cart" name="cgv_consent" required #cgvCheckbox
+                                    (change)="true" style="margin-top: 4px; width: auto; cursor: pointer;">
+                                <label for="cgv-consent-cart"
+                                    style="font-size: 0.85rem; font-weight: 500; cursor: pointer; color: #555; line-height: 1.4; margin-bottom: 0;">
+                                    J'accepte les CGV et je reconnais que les produits personnalisés ne sont pas soumis
+                                    au droit de rétractation.
+                                </label>
+                            </div>
+
                             <!-- Hidden Cart Details -->
                             <input type="hidden" name="Detail_Commande" [value]="getCartSummaryForEmail()">
 
-                            <button type="submit" class="btn btn-primary btn-full">Confirmer la commande</button>
+                            <button type="submit" class="btn btn-primary btn-full"
+                                [disabled]="!cgvCheckbox.checked || !orderData.name || !orderData.email || !orderData.phone || !orderData.street || !orderData.zipCode || !orderData.city || !orderData.country"
+                                [style.opacity]="(cgvCheckbox.checked && orderData.name && orderData.email && orderData.phone && orderData.street && orderData.zipCode && orderData.city && orderData.country) ? 1 : 0.5">Confirmer
+                                la commande</button>
                         </form>
                     </div>
 
@@ -101,21 +141,20 @@
                 </div>
             </div>
         </div>
-
-        <ng-template #emptyCart>
-            <div class="empty-state">
-                <div class="empty-icon">
-                    <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
-                        <line x1="3" y1="6" x2="21" y2="6"></line>
-                        <path d="M16 10a4 4 0 0 1-8 0"></path>
-                    </svg>
-                </div>
-                <h3 class="h4">Votre panier est vide</h3>
-                <p class="text-muted">Il semblerait que vous n'ayez pas encore trouvé votre bonheur.</p>
-                <a routerLink="/" class="btn btn-primary">Découvrir nos créations</a>
+        } @else {
+        <div class="empty-state">
+            <div class="empty-icon">
+                <svg viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="1"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
             </div>
-        </ng-template>
+            <h3 class="h4">Votre panier est vide</h3>
+            <p class="text-muted">Il semblerait que vous n'ayez pas encore trouvé votre bonheur.</p>
+            <a routerLink="/" class="btn btn-primary">Découvrir nos créations</a>
+        </div>
+        }
     </div>
 </div>

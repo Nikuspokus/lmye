@@ -19,7 +19,7 @@
             <div class="thumbnails-grid">
                 @for (img of product.images; track img) {
                 <div class="thumbnail" [class.active]="(selectedImage || product.images[0]) === img"
-                    (click)="selectImage(img)">
+                    (click)="selectImage(img)" (keydown.enter)="selectImage(img)" tabindex="0">
                     <img [src]="img" alt="Thumbnail">
                 </div>
                 }
@@ -55,7 +55,7 @@
 
             <div class="actions">
                 <div class="quantity-selector">
-                    <label>Quantité :</label>
+                    <span style="display:block; margin-bottom: 5px; font-weight: 600;">Quantité :</span>
                     <div class="quantity-controls">
                         <button class="qty-btn" (click)="decrementQuantity()" [disabled]="quantity === 1">−</button>
                         <span class="qty-value">{{ quantity }}</span>

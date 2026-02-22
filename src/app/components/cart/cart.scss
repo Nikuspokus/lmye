@@ -212,6 +212,34 @@
                 padding-top: 1.5rem;
                 border-top: 1px solid #eee;
 
+                .checkout-notice {
+                    background: rgba(177, 156, 217, 0.08);
+                    /* light purple tint */
+                    border-left: 3px solid var(--color-accent-purple);
+                    padding: 1rem 1.25rem;
+                    border-radius: 0 8px 8px 0;
+                    margin-bottom: 2rem;
+
+                    strong {
+                        display: block;
+                        color: var(--color-accent-purple);
+                        font-family: var(--font-heading);
+                        font-size: 1.05rem;
+                        margin-bottom: 0.5rem;
+                    }
+
+                    p {
+                        font-size: 0.9rem;
+                        color: var(--color-text-secondary);
+                        line-height: 1.6;
+                        margin: 0;
+
+                        &:not(:last-child) {
+                            margin-bottom: 0.5rem;
+                        }
+                    }
+                }
+
                 .form-input {
                     width: 100%;
                     padding: 0.8rem;

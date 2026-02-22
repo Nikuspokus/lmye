@@ -1,4 +1,4 @@
-import { Component, HostListener, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, HostListener, PLATFORM_ID, inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 
 @Component({
@@ -12,8 +12,10 @@ export class ScrollToTopComponent {
     isVisible = false;
     private isBrowser: boolean;
 
-    constructor(@Inject(PLATFORM_ID) platformId: Object) {
-        this.isBrowser = isPlatformBrowser(platformId);
+    private platformId = inject(PLATFORM_ID);
+
+    constructor() {
+        this.isBrowser = isPlatformBrowser(this.platformId);
     }
 
     @HostListener('window:scroll')

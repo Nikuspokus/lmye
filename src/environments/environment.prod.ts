@@ -12,6 +12,18 @@ export const environment = {
     siteGlobals: {
         email: 'la.marque.y.est@gmail.com',
         facebook: 'https://www.facebook.com/profile.php?id=61560562014105',
-        location: 'Hauts-de-France'
+        location: 'Hauts-de-France',
+        legal: {
+            siteName: 'La Marque Y Est',
+            siteDomain: 'lamarqueyest.fr',
+            siteUrl: 'www.lamarqueyest.fr',
+            editorName: 'Nicolas Marquillier',
+            editorLegalStatus: 'Entrepreneur Individuel (Auto-entrepreneur)',
+            editorAddress: 'Courcelles-Lès-Lens',
+            editorSiret: '81385596200029',
+            editorContactEmail: 'nicolas.marquillier.pro@gmail.com',
+            hostName: 'Netlify',
+            hostAddress: '44 Montgomery Street, Suite 300, San Francisco, California 94104, USA'
+        }
     }
 };

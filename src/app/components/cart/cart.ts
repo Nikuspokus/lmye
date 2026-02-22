@@ -13,14 +13,17 @@ import { CartService, CartItem } from '../../services/cart.service';
 })
 export class CartComponent implements OnInit {
     cartItems: CartItem[] = [];
-    total: number = 0;
-    orderSuccess: boolean = false;
+    total = 0;
+    orderSuccess = false;
 
     orderData = {
         name: '',
         email: '',
         phone: '',
-        address: '',
+        street: '',
+        zipCode: '',
+        city: '',
+        country: 'France',
         message: ''
     };
 

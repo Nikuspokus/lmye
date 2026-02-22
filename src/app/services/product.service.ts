@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Firestore, collection, addDoc, doc, updateDoc, deleteDoc, onSnapshot, query, orderBy, getDocs } from '@angular/fire/firestore';
 import { Storage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
@@ -29,10 +29,10 @@ export interface Product {
     providedIn: 'root'
 })
 export class ProductService {
-    constructor(
-        private firestore: Firestore,
-        private storage: Storage
-    ) { }
+    private firestore = inject(Firestore);
+    private storage = inject(Storage);
+
+
 
     // --- CATEGORY METHODS ---
     getCategories(): Observable<Category[]> {
@@ -50,7 +50,7 @@ export class ProductService {
         });
     }
 
-    async addCategory(category: Category): Promise<any> {
+    async addCategory(category: Category): Promise<unknown> {
         console.log('📦 [ProductService] Adding category to Firestore...', category);
         try {
             const categoriesCollection = collection(this.firestore, 'categories');
@@ -92,7 +92,7 @@ export class ProductService {
     getProducts(): Observable<Product[]> {
         console.log('🚀 Fetching products from Firestore (Manual Observable)...');
         return new Observable<Product[]>(subscriber => {
-            let unsubscribe: any;
+            let unsubscribe: () => void;
             try {
                 const productsCollection = collection(this.firestore, 'products');
 
@@ -130,14 +130,14 @@ export class ProductService {
         });
     }
 
-    async addProduct(product: Product): Promise<any> {
+    async addProduct(product: Product): Promise<unknown> {
         console.log('Adding product to Firestore...', product);
         try {
             const productsCollection = collection(this.firestore, 'products');
             const docRef = await addDoc(productsCollection, product);
             console.log('✅ Product added successfully with ID:', docRef.id);
             return docRef;
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error('❌ Error adding product to Firestore:', error);
             throw error;
         }
@@ -234,7 +234,7 @@ export class ProductService {
         }
 
         // 2. Seed Products
-        const initialProducts: any[] = [
+        const initialProducts: Product[] = [
             {
                 brand: 'La Marque y Est',
                 type: 'Le Muse',

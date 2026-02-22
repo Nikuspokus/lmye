@@ -1,6 +1,6 @@
 import { Injectable, inject, NgZone } from '@angular/core';
 import { Auth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut, User } from '@angular/fire/auth';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
 import { Router } from '@angular/router';
 

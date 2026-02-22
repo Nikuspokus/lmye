@@ -22,7 +22,7 @@ import { Observable, tap, shareReplay } from 'rxjs';
         <div class="form-scroll-container">
           <!-- Gestion des Catégories -->
           <div class="form-section mb-4 category-section" [class.collapsed]="isCategoryCollapsed">
-            <div class="section-header" (click)="isCategoryCollapsed = !isCategoryCollapsed">
+            <div class="section-header" tabindex="0" (click)="isCategoryCollapsed = !isCategoryCollapsed" (keydown.enter)="isCategoryCollapsed = !isCategoryCollapsed">
               <h2>Gestion des Catégories</h2>
               <button class="chevron-circle">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
@@ -35,13 +35,13 @@ import { Observable, tap, shareReplay } from 'rxjs';
               <div class="collapsible-content">
                 <form [formGroup]="categoryForm" (ngSubmit)="onAddCategory()" class="category-form">
                   <div class="form-group">
-                    <label>Nom de la catégorie</label>
-                    <input formControlName="name" placeholder="Ex: Décoration, Bijoux...">
+                    <label for="cat-name">Nom de la catégorie</label>
+                    <input id="cat-name" formControlName="name" placeholder="Ex: Décoration, Bijoux...">
                   </div>
                   <div class="form-group">
-                    <label>Couleur du badge</label>
+                    <label for="cat-color">Couleur du badge</label>
                     <div class="color-picker-wrapper">
-                      <input type="color" formControlName="color">
+                      <input id="cat-color" type="color" formControlName="color">
                       <span>{{ categoryForm.get('color')?.value }}</span>
                     </div>
                   </div>
@@ -93,19 +93,19 @@ import { Observable, tap, shareReplay } from 'rxjs';
             <h2>{{ editingId ? 'Modifier le produit' : 'Ajouter un produit' }}</h2>
             <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
               <div class="form-group">
-                <label>Marque / Titre</label>
-                <input formControlName="brand" placeholder="Ex: Création Artisanale">
+                <label for="brand">Marque / Titre</label>
+                <input id="brand" formControlName="brand" placeholder="Ex: Création Artisanale">
               </div>
 
               <div class="form-group">
-                <label>Type / Nom</label>
-                <input formControlName="type" placeholder="Ex: Sac Cabas Unique">
+                <label for="type">Type / Nom</label>
+                <input id="type" formControlName="type" placeholder="Ex: Sac Cabas Unique">
               </div>
 
               <div class="form-group">
-                <label>Catégorie</label>
+                <label for="category">Catégorie</label>
                 <div class="custom-select-wrapper">
-                  <select formControlName="category">
+                  <select id="category" formControlName="category">
                     <option value="">-- Choisir une catégorie --</option>
                     @for (cat of categories$ | async; track cat.id) {
                       <option [value]="cat.name">{{ cat.name }}</option>
@@ -118,13 +118,13 @@ import { Observable, tap, shareReplay } from 'rxjs';
               </div>
 
               <div class="form-group">
-                <label>Prix</label>
-                <input formControlName="price" placeholder="Ex: 145€">
+                <label for="price">Prix</label>
+                <input id="price" formControlName="price" placeholder="Ex: 145€">
               </div>
 
              <div class="form-group">
-              <label>Description</label>
-              <textarea formControlName="description" rows="4"></textarea>
+              <label for="description">Description</label>
+              <textarea id="description" formControlName="description" rows="4"></textarea>
             </div>
 
             <div class="form-group checkbox-group">
@@ -137,7 +137,7 @@ import { Observable, tap, shareReplay } from 'rxjs';
 
             <!-- Images Section -->
             <div class="form-group">
-              <label>Photos du produit (Max 3)</label>
+              <span style="font-weight: 600; margin-bottom: 0.6rem; font-size: 0.95rem; color: #444; display: block;">Photos du produit (Max 3)</span>
               <div class="multi-image-inputs">
                 @for (idx of [1, 2, 3]; track idx) {
                   <div class="image-input-group">
@@ -426,11 +426,11 @@ export class AdminDashboardComponent {
   isCategoryCollapsed = true; // Default to collapsed to save space
   uploadProgress = 0;
 
-  productMessage: string = '';
-  isProductError: boolean = false;
+  productMessage = '';
+  isProductError = false;
 
-  categoryMessage: string = '';
-  isCategoryError: boolean = false;
+  categoryMessage = '';
+  isCategoryError = false;
 
   previews: (string | null)[] = [null, null, null];
 
@@ -444,8 +444,8 @@ export class AdminDashboardComponent {
     this.router.navigate(['/']);
   }
 
-  async onFileSelected(event: any, index: number) {
-    const file = event.target.files[0];
+  async onFileSelected(event: Event, index: number) {
+    const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
       this.isUploading = true;
       try {
@@ -490,7 +490,7 @@ export class AdminDashboardComponent {
         }
       }
 
-      const labels: { [key: string]: string } = {
+      const labels: Record<string, string> = {
         brand: 'Marque',
         type: 'Type/Nom',
         category: 'Catégorie',
@@ -541,9 +541,9 @@ export class AdminDashboardComponent {
         this.isProductError = false;
       }
       this.resetForm();
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('[Admin] ÉCHEC de l\'opération :', error);
-      this.productMessage = `Erreur : ${error.message || 'Problème de connexion à Firestore'}`;
+      this.productMessage = `Erreur : ${(error as Error).message || 'Problème de connexion à Firestore'}`;
       this.isProductError = true;
     } finally {
       this.isUploading = false;
@@ -619,9 +619,9 @@ export class AdminDashboardComponent {
       this.editingCategoryId = null;
       this.categoryForm.reset({ color: '#7a5dfa' });
       this.isCategoryError = false;
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('[Admin] Error saving category:', error);
-      this.categoryMessage = 'Erreur : ' + (error.message || 'Firestore error');
+      this.categoryMessage = 'Erreur : ' + ((error as Error).message || 'Firestore error');
       this.isCategoryError = true;
     } finally {
       this.isCategoryLoading = false;
@@ -662,9 +662,9 @@ export class AdminDashboardComponent {
         await this.productService.deleteCategory(id);
         this.categoryMessage = 'Catégorie supprimée.';
         this.isCategoryError = false;
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.error('Error deleting category', error);
-        this.categoryMessage = 'Erreur : ' + (error.message || 'Firestore error');
+        this.categoryMessage = 'Erreur : ' + ((error as Error).message || 'Firestore error');
         this.isCategoryError = true;
       } finally {
         this.isCategoryLoading = false;
